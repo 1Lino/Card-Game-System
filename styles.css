@@ -1,0 +1,250 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+
+}
+
+/*############################################ Setting the Board ####################################################*/
+body{
+    position: relative;
+    background-color: rgb(38, 38, 65);
+
+    .status{
+        width: 90%;
+        display: flex;
+        flex-direction: row;
+        justify-content:space-between;
+        position: fixed;
+        top: 20px;
+        left: 5%;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 5px;
+        color: whitesmoke;
+
+        .player-status{
+            border: 2px dashed green;
+            background-color: rgb(69, 146, 69);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .enemy-status{
+            border: 2px dashed red;
+            background-color: rgb(153, 75, 75);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .turn{
+            border: 2px dashed blue;
+            background-color: rgb(82, 82, 219);
+            border-radius: 50%;
+            padding: 10px;
+        }
+    }
+}
+
+.third-perspective{
+    perspective: 1500px;  /* for the 3d perspective*/
+    padding-left:100px; 
+    padding-right:100px; 
+}
+
+.flat-perspective{
+    position: absolute;
+    /*border: 1px solid red;*/
+    width: 100%;
+    z-index: 1;
+}
+.flat-perspective.hand1{
+    bottom: 1%;
+}
+.flat-perspective.hand2{
+    top: 8%;
+    transform: scale(0.6);
+}
+
+.board-in-perspective{ /*.card-board*/
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* define a grid of 5 equal columns */
+    grid-template-rows: 1fr 1fr 1fr 30px 1fr 1fr 1fr; /* adjusts the height of the rows */
+    gap: 10px;
+    height: 100vh;
+    padding: 0.2rem;
+
+    transform: rotateX(55deg);
+    transform-style: preserve-3d;
+    
+    /* define grid areas for the board*/
+    grid-template-areas: 
+        "hand2 hand2 hand2 hand2 hand2"
+        "deck2 field2 field2 field2 status2"
+        "grave2 field2 field2 field2 status2"
+        "status1 phases phases phases status2"
+        "status1 field1 field1 field1 grave1"
+        "status1 field1 field1 field1 deck1"
+        "hand1 hand1 hand1 hand1 hand1";
+}
+
+
+.status1 {
+    grid-area: status1;
+}
+
+.status2 {
+    grid-area: status2;
+}
+
+.deck1 {
+    grid-area: deck1;
+}
+
+.deck2 {
+    grid-area: deck2;
+}
+
+.hand1 {
+    grid-area: hand1;
+}
+
+.hand2 {
+    grid-area: hand2;
+}   
+
+.grave1 {
+    grid-area: grave1;
+}
+
+.grave2 {
+    grid-area: grave2;
+}
+
+.field1 {
+    grid-area: field1;
+}
+
+.field2 {
+    grid-area: field2;
+}
+
+.phases {
+    grid-area: phases;
+}
+
+/*############################################ Styling the board ####################################################*/
+.place {
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+.hand1, .hand2, .phases, .phase-indicator{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.phases{
+    align-items: center;
+    gap: 10px;
+}
+.phase-indicator{
+    gap: 30px;
+    width: 70%;
+    height: 30px;
+    border: 1px solid #999;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+}
+.phase{
+    width: 100px;
+    height: 25px;
+    border: 1px solid #999;
+    border-radius: 5px;
+    margin: 0 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.turn-indicator1, .turn-indicator2{
+    width: 10%;
+    height: 25px;
+    border: 1px solid #999;
+    border-radius: 5px;
+    margin: 5px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fields{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+    align-items: center;
+    border: 1px solid #999;
+    border-radius: 5px;
+}
+.field2{
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+}
+.field1{
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+}
+
+.card-place, .card{
+    width: 80px;
+    height: 120px;
+    border: 2px dashed #666;
+    border-radius: 5px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.field1 > .card-place:first-of-type{
+    transform: rotateZ(35deg) translateY(-65px);
+}
+.field1 > .card-place:last-of-type{
+    transform: rotateZ(-35deg) translateY(-65px);
+}
+.field2 > .card-place:first-of-type{
+    transform: rotateZ(-35deg) translateY(65px);
+}
+.field2 > .card-place:last-of-type{
+    transform: rotateZ(35deg) translateY(65px);
+}
+
+.status1, .status2{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.player1-status, .player2-status{
+    width: 90%;
+    height: 20%;
+    border: 1px solid #999;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.player1-card-detail, .player2-card-detail{
+    width: 90%;
+    height: 70%;
+    border: 1px solid #999;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

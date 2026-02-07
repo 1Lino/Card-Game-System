@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Card Animation Test</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #1e1e1e;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .mesa {
+      position: relative;
+      width: 600px;
+      height: 300px;
+      border: 1px dashed #555;
+    }
+
+    .baralho,
+    .mao {
+      position: absolute;
+      width: 100px;
+      height: 140px;
+      border: 2px solid #aaa;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .baralho {
+      left: 50px;
+      top: 80px;
+      background: #333;
+    }
+
+    .mao {
+      right: 50px;
+      top: 80px;
+      background: #222;
+    }
+
+    .card {
+      width: 80px;
+      height: 120px;
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+    }
+
+    
+
+    .flying {
+      position: absolute;
+      top: 90px;
+      left: 60px;
+      z-index: 10;
+      opacity: 0.5;
+      transform: translate(0, 0);
+      transition:
+        transform 0.6s cubic-bezier(.3,.8,.3,1),
+        opacity 0.5s ease;
+    }
+
+    .flying.move {
+      transform: translate(360px, -40px) rotate(8deg);
+      opacity: 1;
+    }
+
+    .flying.hidden {
+      transition: none;
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+
+
+    button {
+      margin-top: 20px;
+      padding: 8px 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="mesa">
+    <div class="baralho">
+      <div class="card"></div>
+    </div>
+
+    <div class="mao"></div>
+
+    <!-- carta que vai voar -->
+    <div class="card flying"></div>
+  </div>
+
+  <button id="draw">Puxar carta</button>
+
+  <script>
+  const button = document.getElementById("draw");
+  const flyingCard = document.querySelector(".flying");
+  const mao = document.querySelector(".mao");
+
+  button.addEventListener("click", () => {
+
+    // garante estado inicial invisível corretamente resetado
+    flyingCard.classList.remove("hidden");
+
+    // força reflow
+    flyingCard.offsetHeight;
+
+    // inicia animação
+    flyingCard.classList.add("move");
+
+    flyingCard.addEventListener("transitionend", () => {
+      // cria carta definitiva na mão
+      const card = document.createElement("div");
+      card.className = "card";
+      mao.appendChild(card);
+
+      // esconde e reseta sem animação
+      flyingCard.classList.remove("move");
+      flyingCard.classList.add("hidden");
+    }, { once: true });
+  });
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Card Battle Demo – Defeat</title>
+
+<style>
+/* ===== RESET ===== */
+body {
+  margin: 0;
+  background: #111;
+  font-family: Arial, sans-serif;
+}
+
+/* ===== TELA DE BATALHA ===== */
+.battle-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle, #222, #000);
+  opacity: 0;
+}
+
+.battle-screen.enter {
+  animation: fadeIn 0.6s forwards;
+}
+
+.battle-screen.exit {
+  animation: fadeOut 0.6s forwards;
+}
+
+/* ===== CARD ===== */
+.card {
+  position: relative;
+  width: 140px;
+  height: 200px;
+  background: linear-gradient(#444, #222);
+  border-radius: 10px;
+  border: 2px solid #666;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+/* Hover / seleção */
+.card:hover {
+  outline: 3px solid crimson;
+  box-shadow: 0 0 15px crimson;
+  transform: scale(1.05);
+}
+
+/* Ponteiro */
+.card::after {
+  content: "▶";
+  position: absolute;
+  left: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  color: crimson;
+  font-size: 20px;
+}
+
+.card:hover::after {
+  opacity: 1;
+}
+
+/* ===== TEXTO DE DERROTA ===== */
+.defeat-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  font-weight: bold;
+  color: crimson;
+  text-shadow: 0 0 10px black;
+  pointer-events: none;
+
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.card.defeated .defeat-text {
+  animation: defeatText 0.6s ease forwards;
+}
+
+@keyframes defeatText {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px) scale(1);
+  }
+}
+
+/* ===== SHAKE ===== */
+@keyframes shake {
+  0% { transform: translate(0); }
+  25% { transform: translate(-5px); }
+  50% { transform: translate(5px); }
+  75% { transform: translate(-5px); }
+  100% { transform: translate(0); }
+}
+
+.card.shake {
+  animation: shake 0.4s;
+}
+
+/* ===== GRAVEYARD ===== */
+.card.to-graveyard {
+  animation: graveyard 0.8s ease forwards;
+}
+
+@keyframes graveyard {
+  to {
+    transform: translate(300px, 200px) scale(0.3) rotate(20deg);
+    opacity: 0;
+  }
+}
+
+/* ===== FADES ===== */
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="battle-screen enter" id="battle">
+  <div class="card" id="enemyCard">
+    INIMIGO
+    <span class="defeat-text">DEFEAT</span>
+  </div>
+</div>
+
+<script>
+const card = document.getElementById("enemyCard");
+const battle = document.getElementById("battle");
+
+card.addEventListener("click", () => {
+  // impacto + texto
+  card.classList.add("shake", "defeated");
+
+  // envia ao graveyard
+  setTimeout(() => {
+    card.classList.add("to-graveyard");
+  }, 700);
+
+  // encerra a tela
+  setTimeout(() => {
+    battle.classList.add("exit");
+  }, 1300);
+});
+</script>
+
+</body>
+</html>

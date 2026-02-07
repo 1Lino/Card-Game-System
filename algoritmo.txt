@@ -1,0 +1,27 @@
+(x) 1. A mesa do jogo deve ser um grid distribuido inspirado neste layout:
+      - A 1ª row deve ser uma zona para os cards de um jogador, tal zona ocupará 3 espaços do grid.
+        ao lado deve haver um espaço para o baralho, e o outro deve ficar livre.
+      - A 2ª row deve ser a zona de batalha de um jogador, também ocupando 3 espaços de grid.
+      - A 3ª row deve ser de UI de fases e de status de jogadores, ocupando todos os 5 espaços de grid da linha.
+      - A 4ª row deve ser a zona de batalha do outro jogador, também ocupando 3 espaços de grid.
+      - A 5ª row deve ser uma zona para os cards de um jogador, tal zona ocupará 3 espaços do grid.
+        ao lado deve haver um espaço para o baralho, e o outro deve ficar livre.
+(x) 2. Criar mais protótipos de animações:
+      -Animação de fade in de tela de combate.
+      -Animação de "slice" de card rival e "shake".
+      -Animação de fade out da tela de combate.
+      -Animação do card saindo do campo para o graveyard.
+      -E demais animações do tipo.
+      -Também, se possível, criar uma animação de seleção de card inimigo para atacar,
+       com um ponteiro indicando o card onde o mouse passa e um contorno ao redor do card.
+() 3. Quando a página carregar, um baralho simples de teste deve ser renderizado no devido lugar da mesa de jogo.
+
+
+
+// Como converter uma lógica de combate por turnos governada por loop por uma lógica de combate por turnos governada
+   por estados:
+   -Na lógica governada por loops, os turnos dos jogadores intercalam num rodízio: quando um conjunto de comandos termina
+    de ser executado, outro começa, e isto se repete até que termine o combate, ou seja, até que uma determinada condição
+    seja cumprida e termine a execução do loop.
+   -Converter esta lógica em algo governado estritamente por estados requer que hajam controladores de estado que, uma vez acionados,
+    engatilhem determinados eventos. Isto num processo em cadeia, de modo que o resultado de cada evento determina o próximo.

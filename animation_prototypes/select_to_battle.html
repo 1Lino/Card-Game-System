@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .board{
+                width: 50vw;
+                height: 50vh;
+                background-color: gray;
+                display: flex;
+                flex-direction: column;
+                border-radius: 5px;
+                box-shadow: 0px 0px 6px 2px black;
+                margin: 0 auto;
+                padding: 1rem;
+                gap:1rem;
+            }
+            .enemy-field, .player-field{
+                display: flex;
+                flex-direction: row;
+                gap: 1rem;
+                justify-content: center;
+            }
+            .cards{
+                width: 70px;
+                height: 100px;
+                border-radius: 5px;
+                box-shadow: 0px 0px 6px 2px black;
+            }
+            .selected{
+                outline: 2px dashed yellow; 
+                cursor: pointer;
+            }
+            .battleSelected{
+                outline: 2px dashed red; 
+                cursor: pointer;
+            }
+            .onHover{
+                outline: 2px dashed white; 
+                cursor: pointer;
+            }
+    
+        </style>
+    </head>
+    <body>
+        <div class="board">
+            <div class="enemy-field">
+                <div class="cards enemy-card1" data-id="1" data-type="enemy-card"></div>
+                <div class="cards enemy-card2" data-id="2" data-type="enemy-card"></div>
+            </div>
+
+            <div class="player-field">
+                <div class="cards player-card1" data-id="3" data-type="player-card"></div>
+                <div class="cards player-card2" data-id="4" data-type="player-card"></div>
+            </div>
+        </div>
+
+        <script>
+            const cards = document.querySelectorAll(".cards"); 
+            const turnPhase = 'battlePhase';
+
+            let SELECTION_STATE = {
+                selectedPlayerCardId: undefined, 
+                selectedEnemyCardId: undefined,
+                CARD_OWNER: {
+                    player: 'player-card',
+                    enemy: 'enemy-card'
+                }
+            }
+
+            for (let card of cards){
+                card.addEventListener("mouseover", () => onMouseOver(card, SELECTION_STATE));
+                card.addEventListener("mouseout", () => onMouseOut(card));
+                card.addEventListener("click", () => onMouseClick(card, cards, SELECTION_STATE));
+            }
+
+            function onMouseOver(node, state) {
+                if (node.dataset.id !== state.selectedPlayerCardId && node.dataset.id !== state.selectedEnemyCardId){
+                       node.classList.add('onHover');
+                   }
+            }
+            function onMouseOut(node) {
+                node.classList.remove('onHover');
+            }
+            function onMouseClick(node, nodeList, state) {
+                // se o card a ser selecionado é do campo do player:
+                    if (node.dataset.type === SELECTION_STATE.CARD_OWNER.player){
+                        // UI
+                        nodeList.forEach(node => {node.classList.remove('selected'),node.classList.remove('battleSelected')});
+                        node.classList.remove('onHover');
+                        node.classList.add('selected');
+                        // Logic
+                        SELECTION_STATE.selectedEnemyCardId = undefined;
+                        SELECTION_STATE.selectedPlayerCardId = node.dataset.id;
+                        console.log(SELECTION_STATE);
+                    } 
+
+                    // se existe id registrado para um card do campo do player e o card a ser selecionado é do campo inimigo:
+                    if (node.dataset.type === SELECTION_STATE.CARD_OWNER.enemy && SELECTION_STATE.selectedPlayerCardId){
+                        nodeList.forEach(node => node.classList.remove('battleSelected'));
+                        node.classList.remove('onHover');
+                        node.classList.add('battleSelected');
+
+                        SELECTION_STATE.selectedEnemyCardId = node.dataset.id;
+                        console.log(SELECTION_STATE);
+                    }
+            }
+        </script>
+    </body>
+</html>
+
+<!-- REGRAS:
+    (x) 1. Há exatamente duas categorias de cards: (A) player e (B) inimigo.
+    (x) 2. Se um card da categoria A for selecionado, um card da categoria B pode ser selecionado. (Se A, então B)
+    (x) 3. Somente um card de cada categoria pode permanecer selecionado. E se a seleção de A muda, a de B (se houver) é removida.
+-->
