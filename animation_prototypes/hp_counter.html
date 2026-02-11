@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple HP Counter</title>
+  <style>
+    body {
+      background: #111;
+      display: grid;
+      place-items: center;
+      height: 100vh;
+      font-family: monospace;
+    }
+
+    #hp {
+      font-size: 64px;
+      color: #f44;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="hp">100</div>
+  <button onclick="takeDamage(15)">Take 15 damage</button>
+
+  <script>
+    let hp = 100;
+    let anim = null;
+
+    function takeDamage(amount) {
+      const target = Math.max(0, hp - amount);
+
+      clearInterval(anim);
+      anim = setInterval(() => {
+        if (hp > target) {
+          hp--;
+          document.getElementById("hp").textContent = hp;
+        } else {
+          clearInterval(anim);
+        }
+      }, 20); // smaller = faster
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+.selected{
+    outline: 2px dashed yellow; 
+    cursor: pointer;
+}
+.battleSelected{
+    outline: 2px dashed red; 
+    cursor: pointer;
+}
+.onHover{
+    outline: 2px solid white;
+    box-shadow: 0 0 6px 4px blue; 
+    cursor: pointer;
+}

@@ -4,6 +4,7 @@
     box-sizing: border-box;
 }
 
+/* Variáveis de cores de temas vão para cá, bem como as de velocidade de animação, ângulo, etc, para melhor config*/
 :root{
 
 }
@@ -51,6 +52,11 @@ body{
     perspective: 1500px;  /* for the 3d perspective*/
     padding-left:100px; 
     padding-right:100px; 
+
+    /*Absolutamente necessário, pra evitar que os eventos de ponteiro dos elementos filhos
+      sejam sobrescrevidos pelos deste. Isto ocorre porque este elemento cria uma perspectiva 3D, 
+      que gera confusão nos eventos de ponteiro, que são 2D. Por isso é necessário desativar isso aqui*/
+    pointer-events: none; 
 }
 
 .flat-perspective{
@@ -136,8 +142,8 @@ body{
 
 /*############################################ Styling the board ####################################################*/
 .place {
-    border: 1px solid #ccc;
-    background-color: #f0f0f0;
+    outline: 2px solid white;
+    background-color: #68758d;
     border-radius: 5px;
 }
 
@@ -155,7 +161,7 @@ body{
     gap: 30px;
     width: 70%;
     height: 30px;
-    border: 1px solid #999;
+    border: 1px solid white;
     border-radius: 5px;
     justify-content: center;
     align-items: center;
@@ -163,7 +169,7 @@ body{
 .phase{
     width: 100px;
     height: 25px;
-    border: 1px solid #999;
+    border: 1px solid white;
     border-radius: 5px;
     margin: 0 5px;
     display: flex;
@@ -174,7 +180,7 @@ body{
 .turn-indicator1, .turn-indicator2{
     width: 10%;
     height: 25px;
-    border: 1px solid #999;
+    border: 1px solid white;
     border-radius: 5px;
     margin: 5px auto;
     display: flex;
@@ -187,7 +193,6 @@ body{
     flex-direction: row;
     justify-content:space-around;
     align-items: center;
-    border: 1px solid #999;
     border-radius: 5px;
 }
 .field2{
@@ -202,24 +207,25 @@ body{
 .card-place, .card{
     width: 80px;
     height: 120px;
-    border: 2px dashed #666;
+    border: 2px dashed white;
     border-radius: 5px;
     margin: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
+    pointer-events: auto; /* reativa eventos de ponteiro apenas nos campos de cards.*/
 }
 .field1 > .card-place:first-of-type{
-    transform: rotateZ(35deg) translateY(-65px);
+    transform: rotateZ(35deg) translateY(-50px);
 }
 .field1 > .card-place:last-of-type{
-    transform: rotateZ(-35deg) translateY(-65px);
+    transform: rotateZ(-35deg) translateY(-50px);
 }
 .field2 > .card-place:first-of-type{
-    transform: rotateZ(-35deg) translateY(65px);
+    transform: rotateZ(-35deg) translateY(50px);
 }
-.field2 > .card-place:last-of-type{
-    transform: rotateZ(35deg) translateY(65px);
+.field2 > .card-place:last-of-type{   
+    transform: rotateZ(35deg) translateY(50px);
 }
 
 .status1, .status2{
