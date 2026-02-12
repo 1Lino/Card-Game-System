@@ -2,6 +2,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    pointer-events: none;
+    user-select: none;
 }
 
 /* Variáveis de cores de temas vão para cá, bem como as de velocidade de animação, ângulo, etc, para melhor config*/
@@ -49,6 +51,7 @@ body{
 }
 
 .third-perspective{
+    width: 99%;
     perspective: 1500px;  /* for the 3d perspective*/
     padding-left:100px; 
     padding-right:100px; 
@@ -81,7 +84,7 @@ body{
     height: 100vh;
     padding: 0.2rem;
 
-    transform: rotateX(55deg);
+    transform: rotateX(60deg);
     transform-style: preserve-3d;
     
     /* define grid areas for the board*/
@@ -145,6 +148,7 @@ body{
     outline: 2px solid white;
     background-color: #68758d;
     border-radius: 5px;
+    box-shadow: 0px 10px 10px 5px black;
 }
 
 .hand1, .hand2, .phases, .phase-indicator{
@@ -194,6 +198,7 @@ body{
     justify-content:space-around;
     align-items: center;
     border-radius: 5px;
+    
 }
 .field2{
     border-top-left-radius: 50%;
@@ -205,15 +210,39 @@ body{
 }
 
 .card-place, .card{
-    width: 80px;
+    width: 85px;
     height: 120px;
-    border: 2px dashed white;
     border-radius: 5px;
     margin: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
     pointer-events: auto; /* reativa eventos de ponteiro apenas nos campos de cards.*/
+
+    /*border: 2px dashed white;*/
+    background-color: #9baed1;
+}
+.deck1{
+    position: relative;
+}
+.deck-stack{
+    width: 80px;
+    height: 120px;
+    position: absolute;
+    top: -5%;
+    right: 28%;
+    background-color: rgb(49, 81, 168);
+    outline: 2px solid black;
+}
+.card-back{
+    width: 80px;
+    height: 80px;
+    /* os três círculos interconectados detrás dos cards é feito com múltiplos radial-gradient*/
+    background:
+        radial-gradient(circle at 50% 50%, #3498db 25px, transparent 21px),
+        radial-gradient(circle at 50% 70%, #58afe9 20px, transparent 21px),
+        radial-gradient(circle at 50% 30%, #58afe9 20px, transparent 21px);
+    background-repeat: no-repeat;
 }
 .field1 > .card-place:first-of-type{
     transform: rotateZ(35deg) translateY(-50px);

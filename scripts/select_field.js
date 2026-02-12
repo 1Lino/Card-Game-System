@@ -10,21 +10,21 @@ let SELECTION_STATE = {
     }
 }
 
+// tem que criar um event handler pra poder capturar as novas cartas com elemento .hoverable.
 for (let card of cards){
     card.addEventListener("mouseover", () => onMouseOver(card, SELECTION_STATE));
     card.addEventListener("mouseout", () => onMouseOut(card));
     card.addEventListener("click", () => onMouseClick(card, cards, SELECTION_STATE));
 }
 
-function onMouseOver(node, state) {
-    /*if (node.dataset.id !== state.selectedPlayerCardId && node.dataset.id !== state.selectedEnemyCardId){
-            node.classList.add('onHover');
-        }*/
+function onMouseOver(node) {
     node.classList.add('onHover');
 }
+
 function onMouseOut(node) {
     node.classList.remove('onHover');
 }
+
 function onMouseClick(node, nodeList, state) {
     // se o card a ser selecionado é do campo do player:
         if (node.dataset.type === SELECTION_STATE.CARD_OWNER.player){

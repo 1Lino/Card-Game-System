@@ -6,6 +6,7 @@
         <title>Card Board</title>
         <link rel="stylesheet" href="./styles/board.css" />
         <link rel="stylesheet" href="./styles/selection.css" />
+        <link rel="stylesheet" href="./styles/animations.css" />
     </head>
 
     <body>
@@ -24,9 +25,12 @@
             </div>
 
             <div class="flat-perspective hand1">
+                <!--
                 <div class="hoverable card"></div>
                 <div class="hoverable card"></div>
                 <div class="hoverable card"></div>
+                -->
+                
             </div>
 
             <div class="third-perspective"> 
@@ -68,8 +72,16 @@
                         <div class="hoverable card-place">Graveyard1</div>
                     </div>
                     
-                    <div class="place fields deck1">
-                        <div class="card-place">Deck1</div>
+                    <div class="place fields deck1" style="pointer-events: none;">
+                        <div class="card-place" style="pointer-events: none;">
+                            <div class="hoverable card deck-stack">
+                                <div class="card-back" style="pointer-events: none;"></div>
+
+                                <div class="card deck-stack flying">
+                                    <div class="card-back"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="place status1"></div>
@@ -81,12 +93,3 @@
     <script type="module" src="./scripts/main.js"></script>
     </body>
 </html>
-
-<!--
-    A respeito dos campos do tabuleiro de carta, especificamente os que possuem transform aplicado,
-    o ideal seria que, na perspectiva do DOM, tais campos permanecessem sem transform, ou melhor dizendo:
-    o transform deveria ser aplicado somente ao conteúdo destes campos. Se os campos precisam ter transform aplicado,
-    então que estejam contidos cada qual em campos sem transform. Isto deveria ser assim para evitar alguns erros de
-    cálculos (por exemplo, em eventos de hover, pode haver alguns bugs se os elementos não estiverem bem posicionados, ou
-    pelo menos isto é algo que vi ocorrer neste projeto)
--->
