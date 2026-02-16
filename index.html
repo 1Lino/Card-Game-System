@@ -19,9 +19,12 @@
         <div class="card-board"> 
 
             <div class="flat-perspective hand2">
+                <!--
                 <div class="hoverable card"></div>
                 <div class="hoverable card"></div>
                 <div class="hoverable card"></div>
+                -->
+                
             </div>
 
             <div class="flat-perspective hand1">
@@ -38,7 +41,15 @@
                     <div class="place status2"></div>
 
                     <div class="place fields deck2">
-                        <div class="card-place">Deck2</div>
+                       <div class="card-place" style="pointer-events: none;">
+                            <div class="hoverable card deck-stack2">
+                                <div class="card-back" style="pointer-events: none;"></div>
+
+                                <div class="card deck-stack flying hidden">
+                                    <div class="card-back"></div>
+                                </div>
+                            </div>
+                       </div>
                     </div>
 
                     <div class="place fields grave2">
@@ -77,7 +88,9 @@
                             <div class="hoverable card deck-stack">
                                 <div class="card-back" style="pointer-events: none;"></div>
 
-                                <div class="card deck-stack flying">
+                                <!-- este bloco abaixo deve ser criado dinamicamente, no deck do jogador atual.
+                                    Aqui no caso está no deck do jogador 1. Isso via JS -->
+                                <div class="card deck-stack flying hidden">
                                     <div class="card-back"></div>
                                 </div>
                             </div>

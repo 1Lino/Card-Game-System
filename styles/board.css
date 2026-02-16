@@ -51,7 +51,8 @@ body{
 }
 
 .third-perspective{
-    width: 99%;
+    margin: 0 auto;
+    width: 95%;
     perspective: 1500px;  /* for the 3d perspective*/
     padding-left:100px; 
     padding-right:100px; 
@@ -225,7 +226,7 @@ body{
 .deck1{
     position: relative;
 }
-.deck-stack{
+.deck-stack, .deck-stack2{
     width: 80px;
     height: 120px;
     position: absolute;
@@ -233,6 +234,10 @@ body{
     right: 28%;
     background-color: rgb(49, 81, 168);
     outline: 2px solid black;
+}
+.deck-stack2{
+    top: -0.09%;
+    left: 5.6%;
 }
 .card-back{
     width: 80px;

@@ -17,6 +17,11 @@
     opacity: 1;
 }
 
+.flying.move2 {
+    transform: translate(300px, -100px) rotateY(0deg);
+    opacity: 1;
+}
+
 .flying.hidden {
     transition: none;
     opacity: 1;
