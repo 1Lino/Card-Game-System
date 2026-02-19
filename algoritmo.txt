@@ -14,8 +14,8 @@
       -E demais animações do tipo.
       -Também, se possível, criar uma animação de seleção de card inimigo para atacar,
        com um ponteiro indicando o card onde o mouse passa e um contorno ao redor do card.
-() 3. Quando a página carregar, um baralho simples de teste deve ser renderizado no devido lugar da mesa de jogo.
-
+(x) 3. Quando a página carregar, um baralho simples de teste deve ser renderizado no devido lugar da mesa de jogo.
+() 4. Começar a criar os estados de jogo iniciais. A começar pela fase de início do jogo (os dados iniciais).
 
 
 // Como converter uma lógica de combate por turnos governada por loop por uma lógica de combate por turnos governada
@@ -23,5 +23,4 @@
    -Na lógica governada por loops, os turnos dos jogadores intercalam num rodízio: quando um conjunto de comandos termina
     de ser executado, outro começa, e isto se repete até que termine o combate, ou seja, até que uma determinada condição
     seja cumprida e termine a execução do loop.
-   -Converter esta lógica em algo governado estritamente por estados requer que hajam controladores de estado que, uma vez acionados,
-    engatilhem determinados eventos. Isto num processo em cadeia, de modo que o resultado de cada evento determina o próximo.
+   -Converter esta lógica em algo governado estritamente por estados requer que hajam controladores de estado que, uma vez acionados, engatilham determinados eventos. Isto num processo em cadeia, de modo que o resultado de cada evento determina o próximo.

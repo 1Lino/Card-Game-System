@@ -103,14 +103,14 @@ function drawAnimation(state_obj){
         flyingCard.classList.add("move");
 
         flyingCard.addEventListener("transitionend", () => {
-        // cria carta definitiva na mão
-        const card = document.createElement("div");
-        card.className = "hoverable card";
-        hand.appendChild(card);
+            // cria carta definitiva na mão
+            const card = document.createElement("div");
+            card.className = "hoverable card";
+            hand.appendChild(card);
 
-        // esconde e reseta a animação.
-        flyingCard.classList.remove("move");
-        flyingCard.classList.add("hidden");
+            // esconde e reseta a animação.
+            flyingCard.classList.remove("move");
+            flyingCard.classList.add("hidden");
         }, {once: true});
 
         // {once: true} evita que o evento fique acumulando no call stack, 
@@ -127,14 +127,14 @@ function drawAnimation(state_obj){
         flying_c.classList.add("move2");
 
         flying_c.addEventListener("transitionend", () => {
-        // cria carta definitiva na mão
-        const card = document.createElement("div");
-        card.className = "hoverable card";
-        hand2.appendChild(card);
+            // cria carta definitiva na mão
+            const card = document.createElement("div");
+            card.className = "hoverable card";
+            hand2.appendChild(card);
 
-        // esconde e reseta a animação.
-        flying_c.classList.remove("move2");
-        flying_c.classList.add("hidden");
+            // esconde e reseta a animação.
+            flying_c.classList.remove("move2");
+            flying_c.classList.add("hidden");
         }, {once: true});
     }
 }
