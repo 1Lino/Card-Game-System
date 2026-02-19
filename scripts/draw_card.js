@@ -1,3 +1,7 @@
+// conceito de imutabilidade deve ser aplicado em todo o projeto.
+import {getGameState} from '/scripts/game_state.js';
+
+let state = getGameState();
 
 // estes seletores são apenas para testes. 
 const deck = document.querySelector('.deck-stack');
@@ -5,20 +9,14 @@ const deck2 = document.querySelector('.deck-stack2');
 const hand = document.querySelector('.hand1');
 const hand2 = document.querySelector('.hand2');
 const flyingCard = document.querySelector('.flying');
-const flying_c = document.querySelector('.flying');
+const flying_c = document.querySelector('.flying2');
 
-// Estes samples são só para testar a função drawCard dentro da lógica de separação de responsabilidades.
-let state = {
-    sample_deck: ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
-    sample_deck2: ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
-    sample_hand: [],
-    sample_hand2: [],
-    draw_amount: 1,
-    player: 2
-};
 
+
+//################################## EVENT HANDLERS #######################################
 // evento de click e handler que controla este evento:
 deck.addEventListener('click', () => {
+    if (state.turn.player !== 'player') return;
     state = drawCard(state);
     updateHandUI(state);
     console.log(state);
@@ -26,56 +24,67 @@ deck.addEventListener('click', () => {
 
 // sem evento de click:
 function drawPhase(state_obj){
-    if (state_obj.player === 1){
-        state = drawCard(state);
-        updateHandUI(state);
-        console.log(state);
-    } 
-    else if (state_obj.player === 2){
-        // TODO
-    }
+    const state = drawCard({...state_obj});
+    updateHandUI(state);
+    console.log(state);
+    return {...state};
 }
-drawPhase(state);
+state = drawPhase(state);
 
-// conceito de imutabilidade aplicado, ou seja, não se modifica o objeto diretamente dentro da função,
-// mas retorna-se um novo objeto para que seja reatribuido ao objeto original.
+//##########################################################################################
+
+
+
+//################################## FUNÇÕES LÓGICAS #######################################
 function drawCard(state_obj){
     let stats = {};
 
-    if (state_obj.player === 1){
+    // com algum trabalho, as duas estruturas abaixo podem ser reduzidas a uma só, bastando usar o próprio turn.player
+    // pra fazer a referência às propriedades, tipo ...state_obj['player'].deck, etc.
+    if (state_obj.turn.player === 'player'){
         // se state_obj e sua propriedade sample_deck existirem (?) mas não (!) possuírem tamanho, ou seja, length = 0, então retorna
         // o mesmo objeto (pra evitar retornar undefined, que é o padrão de return);
-        if (!state_obj?.sample_deck?.length) return state_obj;
+        if (!state_obj?.player.deck?.length) return {...state_obj};
 
         stats = {
             ...state_obj,
-            sample_deck: [...state_obj.sample_deck],
-            sample_hand: [...state_obj.sample_hand],
+            player: {
+                ...state_obj.player, 
+                deck: [...state_obj.player.deck],
+                hand: [...state_obj.player.hand]
+            },
         }; 
 
         // stats.sample_deck.length > 0 aqui é necessário para que não aconteça o caso de o deck esvaziar durante o loop e continuar o loop com deck vazio,
         // por exemplo: suponha que o deck tenha 1 carta, mas o número de puxadas permitidas é 2, se não houver verificação, seria puxada
         // a carta restante e mais uma 'undefined', de modo que a mão/array ficaria com objetos 'undefined'.
-        for (let i = 0; i < stats.draw_amount && stats.sample_deck.length > 0; i++){
-            stats.sample_hand.push(stats.sample_deck.pop());
+        for (let i = 0; i < stats.player.actions.drawsRemaining && stats.player.deck.length > 0; i++){
+            stats.player.hand.push(stats.player.deck.pop());
         }
     }
-    else if (state_obj.player === 2){
-        if (!state_obj?.sample_deck2?.length) return state_obj;
+    else if (state_obj.turn.player === 'enemy'){
+        if (!state_obj?.enemy.deck?.length) return {...state_obj};
 
         stats = {
             ...state_obj,
-            sample_deck2: [...state_obj.sample_deck2],
-            sample_hand2: [...state_obj.sample_hand2],
-        }; 
+            enemy: {
+                ...state_obj.enemy, 
+                deck: [...state_obj.enemy.deck],
+                hand: [...state_obj.enemy.hand]
+            },
+        };  
 
-        for (let i = 0; i < stats.draw_amount && stats.sample_deck2.length > 0; i++){
-            stats.sample_hand2.push(stats.sample_deck2.pop());
+        for (let i = 0; i < stats.enemy.actions.drawsRemaining && stats.enemy.deck.length > 0; i++){
+            stats.enemy.hand.push(stats.enemy.deck.pop());
         }
     }
 
-    return stats;
+    return {...stats};
 }
+
+
+
+//################################## FUNÇÕES DE UI #######################################
 
 // update de UI com base nos status:
 // TODO: deve ser adicionada uma lógica que faz com que a drawAnimation só seja chamada quando for permitida
@@ -93,7 +102,7 @@ function updateHandUI(state_obj){
 // deverá ser usada para ambos os decks. Do jeito que tá agora é preciso fazer um monte de trabalho repetido.
 function drawAnimation(state_obj){
 
-    if (state_obj.player === 1){
+    if (state_obj.turn.player === 'player'){
         flyingCard.classList.remove("hidden");
 
         // força reflow
@@ -117,7 +126,7 @@ function drawAnimation(state_obj){
         // ou seja, ele é executado apenas uma vez e então removido do call stack.
         // isto evita bug de eventos duplicados a cada nova chamada.
     }
-    else if (state_obj.player === 2){ 
+    else if (state_obj.turn.player === 'enemy'){ 
         flying_c.classList.remove("hidden");
 
         // força reflow

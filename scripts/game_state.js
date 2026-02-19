@@ -14,7 +14,7 @@ let GAME_STATE = {
     },
 
     turn: {
-        player: 'player', // ou enemy
+        player: 'enemy', // ou enemy
         count: 1,
         phase: 'draw', // draw | main | battle | end
     },
@@ -57,4 +57,9 @@ let GAME_STATE = {
         selectableTargets: [],
     }
 
+}
+
+// faz todo o GAME_STATE acessível.
+export function getGameState(){
+    return {...GAME_STATE};
 }
