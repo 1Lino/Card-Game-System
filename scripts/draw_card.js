@@ -24,9 +24,53 @@ deck.addEventListener('click', () => {
 
 // sem evento de click:
 function drawPhase(state_obj){
-    const state = drawCard({...state_obj});
-    updateHandUI(state);
-    console.log(state);
+    let state = {};
+
+    // se for o primeiro turno do duelo, ambos os jogadores devem puxar os cards iniciais.
+    if (state_obj.flags.isFirstTurn){
+        // atualiza o UI de acordo com o estado atual de coisas recebido pela função drawPhase.
+        // jogador pode puxar um certo número de cards, a UI precisa saber disso antes da mudança de estado.
+        updateHandUI({
+            ...state_obj, 
+            turn: {
+                ...state_obj.turn,
+                player: 'player'
+            }
+        });
+        // após a atualização da UI, atualiza o estado para a próxima interação com a UI:
+        state = drawCard({
+            ...state_obj, 
+            turn: {
+                ...state_obj.turn,
+                player: 'player'
+            }
+        });
+
+        // passa o novo estado já atualizado para a próxima atualização de UI, no caso, a da mão do inimigo:
+        updateHandUI({
+            ...state, 
+            turn: {
+                ...state.turn,
+                player: 'enemy'
+            }
+        });
+        
+        // Por último, atualiza o estado novamente, com os parâmetros do inimigo:
+        state = drawCard({
+            ...state, 
+            turn: {
+                ...state.turn,
+                player: 'enemy'
+            }
+        });
+
+        console.log(state);
+        return {...state}; // e então retorna o resultado final do estado: mão do jogador e mão do inimigo atualizadas.
+    }
+    
+    //updateHandUI(state); // se não for o primeiro turno do duelo, então segue o padrão normals
+    //console.log(state);
+
     return {...state};
 }
 state = drawPhase(state);
@@ -61,8 +105,9 @@ function drawCard(state_obj){
         for (let i = 0; i < stats.player.actions.drawsRemaining && stats.player.deck.length > 0; i++){
             stats.player.hand.push(stats.player.deck.pop());
         }
+        state.player.actions.drawsRemaining = 0;
     }
-    else if (state_obj.turn.player === 'enemy'){
+    if (state_obj.turn.player === 'enemy'){
         if (!state_obj?.enemy.deck?.length) return {...state_obj};
 
         stats = {
@@ -77,6 +122,7 @@ function drawCard(state_obj){
         for (let i = 0; i < stats.enemy.actions.drawsRemaining && stats.enemy.deck.length > 0; i++){
             stats.enemy.hand.push(stats.enemy.deck.pop());
         }
+        state.enemy.actions.drawsRemaining = 0;
     }
 
     return {...stats};
@@ -86,14 +132,10 @@ function drawCard(state_obj){
 
 //################################## FUNÇÕES DE UI #######################################
 
-// update de UI com base nos status:
-// TODO: deve ser adicionada uma lógica que faz com que a drawAnimation só seja chamada quando for permitida
-// pois no estado atual, a animação ocorre toda vez que se clique no deck.
-// basicamente, um estado deverá controlar esta animação.
 function updateHandUI(state_obj){
     const stats = {...state_obj}; 
     drawAnimation(stats);
-    stats[stats.turn.player].actions.drawsRemaining = 0; // quando todas as cartas forem puxadas, este contador deve ir a zero, pra evitar animação de novas cartas no DOM.
+    //stats[stats.turn.player].actions.drawsRemaining = 0; // quando todas as cartas forem puxadas, este contador deve ir a zero, pra evitar animação de novas cartas no DOM.
 }
 
 // TODO: esta animação foi "hard-coded" no momento. 
