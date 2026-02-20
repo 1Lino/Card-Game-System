@@ -93,7 +93,7 @@ function drawCard(state_obj){
 function updateHandUI(state_obj){
     const stats = {...state_obj}; 
     drawAnimation(stats);
-    //alert(`Drawed ${stats.draw_amount}!\nDeck: ${stats.sample_deck}\nHand: ${stats.sample_hand}`);
+    stats[stats.turn.player].actions.drawsRemaining = 0; // quando todas as cartas forem puxadas, este contador deve ir a zero, pra evitar animação de novas cartas no DOM.
 }
 
 // TODO: esta animação foi "hard-coded" no momento. 
@@ -103,48 +103,56 @@ function updateHandUI(state_obj){
 function drawAnimation(state_obj){
 
     if (state_obj.turn.player === 'player'){
-        flyingCard.classList.remove("hidden");
+        if (state_obj.player.actions.drawsRemaining === 0) return; // se este contador for zero, evita renderização de novos cards no DOM.
+        for (let amount = 0; amount < state_obj.player.actions.drawsRemaining; amount++){
+            flyingCard.classList.remove("hidden");
 
-        // força reflow
-        flyingCard.offsetHeight;
+            // força reflow
+            flyingCard.offsetHeight;
 
-        // inicia animação
-        flyingCard.classList.add("move");
+            // inicia animação
+            flyingCard.classList.add("move");
 
-        flyingCard.addEventListener("transitionend", () => {
-            // cria carta definitiva na mão
-            const card = document.createElement("div");
-            card.className = "hoverable card";
-            hand.appendChild(card);
+            flyingCard.addEventListener("transitionend", () => {
+                // cria carta definitiva na mão
+                const card = document.createElement("div");
+                card.className = "hoverable card";
+                hand.appendChild(card);
 
-            // esconde e reseta a animação.
-            flyingCard.classList.remove("move");
-            flyingCard.classList.add("hidden");
-        }, {once: true});
+                // esconde e reseta a animação.
+                flyingCard.classList.remove("move");
+                flyingCard.classList.add("hidden");
+            }, {once: true});
+        }
 
         // {once: true} evita que o evento fique acumulando no call stack, 
         // ou seja, ele é executado apenas uma vez e então removido do call stack.
         // isto evita bug de eventos duplicados a cada nova chamada.
     }
     else if (state_obj.turn.player === 'enemy'){ 
-        flying_c.classList.remove("hidden");
+        if (state_obj.enemy.actions.drawsRemaining === 0) return;
 
-        // força reflow
-        flying_c.offsetHeight;
+        for (let amount = 0; amount < state_obj.enemy.actions.drawsRemaining; amount++){
+            flying_c.classList.remove("hidden");
 
-        // inicia animação
-        flying_c.classList.add("move2");
+            // força reflow
+            flying_c.offsetHeight;
 
-        flying_c.addEventListener("transitionend", () => {
-            // cria carta definitiva na mão
-            const card = document.createElement("div");
-            card.className = "hoverable card";
-            hand2.appendChild(card);
+            // inicia animação
+            flying_c.classList.add("move2");
 
-            // esconde e reseta a animação.
-            flying_c.classList.remove("move2");
-            flying_c.classList.add("hidden");
-        }, {once: true});
+            flying_c.addEventListener("transitionend", () => {
+                // cria carta definitiva na mão
+                const card = document.createElement("div");
+                card.className = "hoverable card";
+                hand2.appendChild(card);
+
+                // esconde e reseta a animação.
+                flying_c.classList.remove("move2");
+                flying_c.classList.add("hidden");
+            }, {once: true});
+        }
+        
     }
 }
 

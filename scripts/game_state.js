@@ -14,7 +14,7 @@ let GAME_STATE = {
     },
 
     turn: {
-        player: 'enemy', // ou enemy
+        player: 'enemy', // player ou enemy
         count: 1,
         phase: 'draw', // draw | main | battle | end
     },
@@ -32,7 +32,7 @@ let GAME_STATE = {
                 }],
         grave: [],
         actions: {
-            drawsRemaining: 1,
+            drawsRemaining: 2,
             normalSummonsRemaining: 1,
             attacksRemaining: 1,
         }
@@ -45,7 +45,7 @@ let GAME_STATE = {
         field: [],
         grave: [],
         actions: {
-            drawsRemaining: 1,
+            drawsRemaining: 3,
             normalSummonsRemaining: 1,
             attacksRemaining: 1,
         }
