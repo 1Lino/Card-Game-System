@@ -1,6 +1,8 @@
 // conceito de imutabilidade deve ser aplicado em todo o projeto.
 import {getGameState} from '/scripts/game_state.js';
 
+
+//TODO: este estado aqui deverá ir para um arquivo chamado "game_engine".
 let state = getGameState();
 
 // estes seletores são apenas para testes. 
@@ -55,22 +57,25 @@ function drawPhase(state_obj){
             }
         });
         
-        // Por último, atualiza o estado novamente, com os parâmetros do inimigo:
+        // Por último, atualiza o estado novamente, com os parâmetros do inimigo, e muda a fase para main.:
         state = drawCard({
             ...state, 
             turn: {
                 ...state.turn,
-                player: 'enemy'
+                player: 'enemy',
+                phase: 'main'
             }
         });
 
         console.log(state);
         return {...state}; // e então retorna o resultado final do estado: mão do jogador e mão do inimigo atualizadas.
     }
-    
-    //updateHandUI(state); // se não for o primeiro turno do duelo, então segue o padrão normals
-    //console.log(state);
 
+    // caso não seja o primeiro turno, apenas o jogador da vez puxa os cards, e a UI é atualizada de acordo.
+    updateHandUI({ ...state});
+    state = drawCard({...state});
+
+    console.log(state);
     return {...state};
 }
 state = drawPhase(state);
@@ -135,13 +140,17 @@ function drawCard(state_obj){
 function updateHandUI(state_obj){
     const stats = {...state_obj}; 
     drawAnimation(stats);
-    //stats[stats.turn.player].actions.drawsRemaining = 0; // quando todas as cartas forem puxadas, este contador deve ir a zero, pra evitar animação de novas cartas no DOM.
 }
 
 // TODO: esta animação foi "hard-coded" no momento. 
 // o ideal é que ela crie o elemento flyingCard no container do deck certo,
 // de modo que valores como coordenadas para animação possam ser passados, já que esta função
 // deverá ser usada para ambos os decks. Do jeito que tá agora é preciso fazer um monte de trabalho repetido.
+
+//TODO: esta animação e as demais de UI deverão ir para um arquivo só de animações.
+//ambos os objetos hand: jogador e adversário, devem receber as mesmas classes dinamicamente, de acordo com o turno
+//de cada jogador, e também as transformações da classe flying devem ser modificadas de acordo com isso, isto para 
+//reduzir linhas de código e fazer a função ficar mais flexível. Deverá haver um sistema 
 function drawAnimation(state_obj){
 
     if (state_obj.turn.player === 'player'){
