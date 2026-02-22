@@ -1,0 +1,1 @@
+// Aqui ficarão as funções relacionadas ao uso de cards. Nada complexo: basicamente verificar estado, verificar condições de uso de card, e quantos cards se pode usar nesta fase, etc. Então atualizar o estado e então a UI.

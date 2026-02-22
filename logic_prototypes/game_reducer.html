@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Card Game - Store Pattern</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: #1e1e1e;
+    color: white;
+  }
+
+  .player {
+    margin-bottom: 20px;
+  }
+
+  .hand {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .card {
+    background: #2c2c2c;
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: 1px solid #555;
+  }
+
+  button {
+    margin-right: 10px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+
+  .active {
+    color: #4caf50;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+
+// Uma game engine simples usando o padrão de Store (inspirado no Redux) para gerenciar o estado do jogo e as regras através de um reducer.
+/* =========================
+   STORE (mini Redux)
+========================= */
+
+function createStore(reducer, initialState) {
+  let state = initialState;
+  const listeners = [];
+
+  return {
+    getState() {
+      return state;
+    },
+
+    dispatch(action) {
+      state = reducer(state, action);
+      listeners.forEach(listener => listener());
+    },
+
+    subscribe(listener) {
+      listeners.push(listener);
+    }
+  };
+}
+
+/* =========================
+   ESTADO INICIAL
+========================= */
+
+const initialState = {
+  turn: 0,
+  players: [
+    { id: 1, name: "Jogador 1", hand: [] },
+    { id: 2, name: "Jogador 2", hand: [] }
+  ],
+  deck: ["A", "K", "Q", "J", "10", "9", "8"]
+};
+
+/* ########################
+   REDUCER (regras do jogo)
+   ######################## */
+
+function gameReducer(state, action) {
+  switch (action.type) {
+
+    case "NEXT_TURN":
+      return {
+        ...state,
+        turn: (state.turn + 1) % state.players.length
+      };
+
+    case "DRAW_CARD":
+      if (state.deck.length === 0) return state;
+
+      const card = state.deck[state.deck.length - 1];
+
+      return {
+        ...state,
+        deck: state.deck.slice(0, -1),
+        players: state.players.map((player, index) => {
+          if (index !== state.turn) return player;
+
+          return {
+            ...player,
+            hand: [...player.hand, card]
+          };
+        })
+      };
+
+    default:
+      return state;
+  }
+}
+
+/* ########################
+         CRIA STORE
+   ######################## */
+
+const store = createStore(gameReducer, initialState);
+
+/* ########################
+   RENDERER (REFLECTE O ESTADO NA UI)
+######################## */
+
+function render() {
+  const state = store.getState();
+  const app = document.getElementById("app");
+
+  app.innerHTML = `
+    <h2>Turno de:
+      <span class="active">
+        ${state.players[state.turn].name}
+      </span>
+    </h2>
+
+    <button data-action="DRAW_CARD">Comprar Carta</button>
+    <button data-action="NEXT_TURN">Próximo Turno</button>
+
+    <hr/>
+
+    ${state.players.map(player => `
+      <div class="player">
+        <h3>${player.name}</h3>
+        <div class="hand">
+          ${player.hand.map(card => `
+            <div class="card">${card}</div>
+          `).join("")}
+        </div>
+      </div>
+    `).join("")}
+  `;
+}
+
+/* =========================
+   SUBSCRIBE (render automático quando o estado muda) 
+========================= */
+
+store.subscribe(render);
+
+/* =========================
+   Delegação de eventos (event delegation para lidar com cliques nos botões)
+========================= */
+
+document.addEventListener("click", (e) => {
+  const actionType = e.target.dataset.action;
+  if (!actionType) return;
+
+  store.dispatch({ type: actionType });
+});
+
+/* =========================
+   inicialização (INIT)
+========================= */
+
+render();
+
+</script>
+
+</body>
+</html>
