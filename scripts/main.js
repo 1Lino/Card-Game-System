@@ -1,6 +1,9 @@
-import '/scripts/select_field.js';
-import '/scripts/draw_card.js';
-import '/scripts/game_state.js';
-import '/scripts/use_card.js';
+import '/scripts/engine/game_engine.js';
+import '/scripts/engine/game_phases.js';
+import '/scripts/engine/game_state.js';
+import '/scripts/actions/select_field.js';
+import '/scripts/actions/draw_card.js';
+import '/scripts/actions/use_card.js';
+import '/scripts/game_UI.js';
 
 console.log("Everything Imported!");

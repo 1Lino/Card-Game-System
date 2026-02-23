@@ -15,12 +15,13 @@
       -Também, se possível, criar uma animação de seleção de card inimigo para atacar,
        com um ponteiro indicando o card onde o mouse passa e um contorno ao redor do card.
 (x) 3. Quando a página carregar, um baralho simples de teste deve ser renderizado no devido lugar da mesa de jogo.
-() 4. Começar a criar os estados de jogo iniciais. A começar pela fase de início do jogo (os dados iniciais).
+(x) 4. Começar a criar os estados de jogo iniciais. A começar pela fase de início do jogo (os dados iniciais).
+(x) 5. Centralizar estados.
+(x) 6. Organizar pastas e arquivos logo. Mover funções para seus respectivos arquivos.
+() 7. ambos os objetos hand: jogador e adversário, devem receber as mesmas classes dinamicamente, de acordo com o turno
+      de cada jogador, e também as transformações da classe flying devem ser modificadas de acordo com isso, isto para 
+      reduzir linhas de código e tornar a função mais flexível.
+() 8. select_field deve ser atualizado para usar o novo game_state.
+() 9. lógica de use_card deve ser criada.
 
 
-// Como converter uma lógica de combate por turnos governada por loop por uma lógica de combate por turnos governada
-   por estados:
-   -Na lógica governada por loops, os turnos dos jogadores intercalam num rodízio: quando um conjunto de comandos termina
-    de ser executado, outro começa, e isto se repete até que termine o combate, ou seja, até que uma determinada condição
-    seja cumprida e termine a execução do loop.
-   -Converter esta lógica em algo governado estritamente por estados requer que hajam controladores de estado que, uma vez acionados, engatilham determinados eventos. Isto num processo em cadeia, de modo que o resultado de cada evento determina o próximo.
