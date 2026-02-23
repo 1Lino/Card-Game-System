@@ -2,7 +2,7 @@
 // utilizar conceitos de imutabilidade ao lidar com variáveis de estado, ou seja, nunca modificar os atributos diretamente.
 // os decks, neste estado, devem conter apenas os ids dos cards, para puxar as informações dos cards diretamente
 // de um json ou outra base de dados qualquer.
-let GAME_STATE = {
+const GAME_STATE = {
     gameStatus: {
         winner: null, // 'player' | 'enemy'
         isOver: false,
@@ -59,7 +59,32 @@ let GAME_STATE = {
 
 }
 
-// faz todo o GAME_STATE acessível.
+// =============================================FUNÇÕES AUXILIARES ==============================================
+// Encapsulamento de estado do jogo, de modo que ele não seja acessível diretamente por outros arquivos, e sim apenas por meio de um getter. O jogo irá basicamente usar uma cópia do estado.
+
+// deep copy:
 export function getGameState(){
-    return {...GAME_STATE};
+    return {
+        ...GAME_STATE,
+        player: {
+            ...GAME_STATE.player,
+            deck: [...GAME_STATE.player.deck],
+            hand: [...GAME_STATE.player.hand],
+            field: [...GAME_STATE.player.field],
+            grave: [...GAME_STATE.player.grave],
+            actions: {...GAME_STATE.player.actions},
+        }, 
+        enemy: {
+            ...GAME_STATE.enemy,
+            deck: [...GAME_STATE.enemy.deck],
+            hand: [...GAME_STATE.enemy.hand],
+            field: [...GAME_STATE.enemy.field],
+            grave: [...GAME_STATE.enemy.grave],
+            actions: {...GAME_STATE.enemy.actions},
+        },
+        turn: {...GAME_STATE.turn},
+        flags: {...GAME_STATE.flags},
+        gameStatus: {...GAME_STATE.gameStatus},
+        ui: {...GAME_STATE.ui},
+    };
 }
