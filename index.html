@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Card Board</title>
+        <title>Card Game - Board</title>
         <link rel="stylesheet" href="./styles/board.css" />
         <link rel="stylesheet" href="./styles/selection.css" />
         <link rel="stylesheet" href="./styles/animations.css" />
@@ -18,42 +18,50 @@
 
         <div class="card-board"> 
 
-            <div class="flat-perspective hand2">
-                <!--
-                <div class="hoverable card"></div>
-                <div class="hoverable card"></div>
-                <div class="hoverable card"></div>
-                -->
+            <!-- 1: player; 2: enemy -->
+            <div class="flat-perspective hand1">
                 
             </div>
 
-            <div class="flat-perspective hand1">
-                <!--
-                <div class="hoverable card"></div>
-                <div class="hoverable card"></div>
-                <div class="hoverable card"></div>
-                -->
-                
+            <div class="flat-perspective hand2">
+        
             </div>
 
             <div class="third-perspective"> 
+
                 <div class="board-in-perspective">
+                    <div class="place status1"></div>
+
                     <div class="place status2"></div>
+
+                    <div class="place fields deck1" style="pointer-events: none;">
+                        <div class="card-place" style="pointer-events: none;">
+                            <div class="hoverable card deck-stack">
+                                <div class="card-back" style="pointer-events: none;"></div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="place fields deck2">
                        <div class="card-place" style="pointer-events: none;">
                             <div class="hoverable card deck-stack2">
                                 <div class="card-back" style="pointer-events: none;"></div>
-
-                                <div class="card deck-stack2 flying2 hidden">
-                                    <div class="card-back"></div>
-                                </div>
                             </div>
                        </div>
                     </div>
 
+                    <div class="place fields grave1">
+                        <div class="hoverable card-place">Graveyard1</div>
+                    </div>
+
                     <div class="place fields grave2">
                         <div class="hoverable card-place">Graveyard2</div>
+                    </div>
+
+                    <div class="place fields field1">
+                        <div class="hoverable card-place">Field1</div>
+                        <div class="hoverable card-place">Field1</div>
+                        <div class="hoverable card-place">Field1</div>
                     </div>
 
                     <div class="place fields field2">
@@ -72,32 +80,6 @@
                         </div>
                         <div class="turn-indicator2">Player 2</div>
                     </div>
-
-                    <div class="place fields field1">
-                        <div class="hoverable card-place">Field1</div>
-                        <div class="hoverable card-place">Field1</div>
-                        <div class="hoverable card-place">Field1</div>
-                    </div>
-
-                    <div class="place fields grave1">
-                        <div class="hoverable card-place">Graveyard1</div>
-                    </div>
-                    
-                    <div class="place fields deck1" style="pointer-events: none;">
-                        <div class="card-place" style="pointer-events: none;">
-                            <div class="hoverable card deck-stack">
-                                <div class="card-back" style="pointer-events: none;"></div>
-
-                                <!-- este bloco abaixo deve ser criado dinamicamente, no deck do jogador atual.
-                                    Aqui no caso está no deck do jogador 1. Isso via JS -->
-                                <div class="card deck-stack flying hidden">
-                                    <div class="card-back"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="place status1"></div>
                 </div>
             </div>
         </div>
