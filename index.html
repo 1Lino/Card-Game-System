@@ -10,81 +10,83 @@
     </head>
 
     <body>
-        <div class="status">
-            <div class="player-status">Player - HP: 100</div>
-            <div class="turn">Turn 1</div>
-            <div class="enemy-status">HP: 100 - Enemy</div>
-        </div>
-
-        <div class="card-board"> 
-
-            <!-- 1: player; 2: enemy -->
-            <div class="flat-perspective hand1">
-                
+        <!-- Convém que tudo isso aqui vire um tipo de componente CardBoard, e fique aqui apenas a div com classe 'root'. Além disso, convém que todas as propriedades sejam definidas por um objeto com um set de propriedades.
+         De modo que só precise alterar o objeto, e não cada elemento individualmente. -->
+        <div class="root">
+            <div class="status">
+                <div class="player-status">Player - HP: 100</div>
+                <div class="turn">Turn 1</div>
+                <div class="enemy-status">HP: 100 - Enemy</div>
             </div>
 
-            <div class="flat-perspective hand2">
-        
-            </div>
+            <div class="card-board"> 
 
-            <div class="third-perspective"> 
+                <!-- 1: player; 2: enemy -->
+                <div class="flat-perspective hand1">
+                    
+                </div>
 
-                <div class="board-in-perspective">
-                    <div class="place status1"></div>
+                <div class="flat-perspective hand2">
+            
+                </div>
 
-                    <div class="place status2"></div>
+                <div class="third-perspective"> 
 
-                    <div class="place fields deck1" style="pointer-events: none;">
+                    <div class="board-in-perspective">
+                        <div class="place status1"></div>
+
+                        <div class="place status2"></div>
+
+                        <div class="place fields deck1" >
+                            <div class="card-place" style="pointer-events: none;">
+                                <div class="card deck-stack" data-hoverable="true">
+                                    <div class="card-back"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="place fields deck2">
                         <div class="card-place" style="pointer-events: none;">
-                            <div class="hoverable card deck-stack">
-                                <div class="card-back" style="pointer-events: none;"></div>
-                            </div>
+                                <div class="card deck-stack2" data-hoverable="true">
+                                    <div class="card-back" style="pointer-events: none;"></div>
+                                </div>
                         </div>
-                    </div>
-
-                    <div class="place fields deck2">
-                       <div class="card-place" style="pointer-events: none;">
-                            <div class="hoverable card deck-stack2">
-                                <div class="card-back" style="pointer-events: none;"></div>
-                            </div>
-                       </div>
-                    </div>
-
-                    <div class="place fields grave1">
-                        <div class="hoverable card-place">Graveyard1</div>
-                    </div>
-
-                    <div class="place fields grave2">
-                        <div class="hoverable card-place">Graveyard2</div>
-                    </div>
-
-                    <div class="place fields field1">
-                        <div class="hoverable card-place">Field1</div>
-                        <div class="hoverable card-place">Field1</div>
-                        <div class="hoverable card-place">Field1</div>
-                    </div>
-
-                    <div class="place fields field2">
-                        <div class="hoverable card-place">Field2</div>
-                        <div class="hoverable card-place">Field2</div>
-                        <div class="hoverable card-place">Field2</div>
-                    </div>
-
-                    <div class="place phases">
-                        <div class="turn-indicator1">Player 1</div>
-                        <div class="phase-indicator">
-                            <div class="phase draw-phase">Draw</div>
-                            <div class="phase main-phase">Main</div>
-                            <div class="phase battle-phase">Battle</div>
-                            <div class="phase end-phase">End</div>
                         </div>
-                        <div class="turn-indicator2">Player 2</div>
+
+                        <div class="place fields grave1">
+                            <div class="card-place" data-hoverable="true">Graveyard1</div>
+                        </div>
+
+                        <div class="place fields grave2">
+                            <div class="card-place" data-hoverable="true">Graveyard2</div>
+                        </div>
+
+                        <div class="place fields field1">
+                            <div class="card-place" data-hoverable="true">Field1</div>
+                            <div class="card-place" data-hoverable="true">Field1</div>
+                            <div class="card-place" data-hoverable="true">Field1</div>
+                        </div>
+
+                        <div class="place fields field2">
+                            <div class="card-place" data-hoverable="true">Field2</div>
+                            <div class="card-place" data-hoverable="true">Field2</div>
+                            <div class="card-place" data-hoverable="true">Field2</div>
+                        </div>
+
+                        <div class="place phases">
+                            <div class="turn-indicator1">Player 1</div>
+                            <div class="phase-indicator">
+                                <div class="phase draw-phase">Draw</div>
+                                <div class="phase main-phase">Main</div>
+                                <div class="phase battle-phase">Battle</div>
+                                <div class="phase end-phase">End</div>
+                            </div>
+                            <div class="turn-indicator2">Player 2</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-
+        </div> 
     <script type="module" src="./scripts/main.js"></script>
     </body>
 </html>

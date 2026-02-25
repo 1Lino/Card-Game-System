@@ -18,10 +18,12 @@
 (x) 4. Começar a criar os estados de jogo iniciais. A começar pela fase de início do jogo (os dados iniciais).
 (x) 5. Centralizar estados.
 (x) 6. Organizar pastas e arquivos logo. Mover funções para seus respectivos arquivos.
-() 7. ambos os objetos hand: jogador e adversário, devem receber as mesmas classes dinamicamente, de acordo com o turno
+(x) 7. ambos os objetos hand: jogador e adversário, devem receber as mesmas classes dinamicamente, de acordo com o turno
       de cada jogador, e também as transformações da classe flying devem ser modificadas de acordo com isso, isto para 
       reduzir linhas de código e tornar a função mais flexível.
-() 8. select_field deve ser atualizado para usar o novo game_state.
-() 9. lógica de use_card deve ser criada.
+(x) 8. select_field deve ser atualizado para usar o novo game_state.
+() 9. lógica de use_card deve ser criada (main phase).
+() 10. transformar o tabuleiro de cards em um componente, inspirado em React.
+() 11. todas as propriedades dos componentes devem vir de algum objeto que as defina, pra evitar editar diretamente os  elementos. Isto é, utilizar o conceito de "Design Token".
 
 

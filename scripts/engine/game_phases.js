@@ -1,15 +1,15 @@
 // todas as funções relacionadas às fases do jogo, como início de turno, fase principal, fase de ataque, fim de turno, etc., serão definidas aqui. A game_engine que irá usá-las, no entanto.
-import {updateHandUI} from '/scripts/game_UI.js';
+import {updateHandUI} from '/scripts/UI/draw.js';
 import {drawCard} from '/scripts/actions/draw_card.js';
 
-export function drawPhase(state_obj){
+export async function drawPhase(state_obj){
     let state = {};
 
     // se for o primeiro turno do duelo, ambos os jogadores devem puxar os cards iniciais.
     if (state_obj.flags.isFirstTurn){
         // atualiza o UI de acordo com o estado atual de coisas recebido pela função drawPhase.
         // jogador pode puxar um certo número de cards, a UI precisa saber disso antes da mudança de estado.
-        updateHandUI({
+        await updateHandUI({
             ...state_obj, 
             turn: {
                 ...state_obj.turn,
@@ -26,7 +26,7 @@ export function drawPhase(state_obj){
         });
 
         // passa o novo estado já atualizado para a próxima atualização de UI, no caso, a da mão do inimigo:
-        updateHandUI({
+        await updateHandUI({
             ...state, 
             turn: {
                 ...state.turn,

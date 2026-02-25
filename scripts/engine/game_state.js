@@ -55,7 +55,16 @@ const GAME_STATE = {
         selectedCardId: null,
         hoveredCardId: null,
         selectableTargets: [],
+    }, 
+
+    selection: {
+    selectedPlayerCardId: undefined, 
+    selectedEnemyCardId: undefined,
+    cardOwner: {
+        player: 'player-card',
+        enemy: 'enemy-card'
     }
+}
 
 }
 
