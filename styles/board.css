@@ -145,11 +145,17 @@ body{
 }
 
 /*############################################ Styling the board ####################################################*/
-.place {
+.grid { /* each place or block of the grid */
     outline: 2px solid white;
     background-color: #68758d;
     border-radius: 5px;
     box-shadow: 0px 10px 10px 5px black;
+
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+    align-items: center;
+    border-radius: 5px;
 }
 
 .hand1, .hand2, .phases, .phase-indicator{
@@ -193,14 +199,14 @@ body{
     align-items: center;
 }
 
-.fields{
+/*.fields{
     display: flex;
     flex-direction: row;
     justify-content:space-around;
     align-items: center;
     border-radius: 5px;
     
-}
+}*/
 .field2{
     border-top-left-radius: 50%;
     border-top-right-radius: 50%;
@@ -210,7 +216,7 @@ body{
     border-bottom-right-radius: 50%;
 }
 
-.card-place, .card{
+.card-slot, .card{
     width: 85px;
     height: 120px;
     border-radius: 5px;
@@ -222,6 +228,10 @@ body{
 
     /*border: 2px dashed white;*/
     background-color: #9baed1;
+}
+
+.no-pointer{
+    pointer-events: none;
 }
 .deck1{
     position: relative;
@@ -249,16 +259,16 @@ body{
         radial-gradient(circle at 50% 30%, #58afe9 20px, transparent 21px);
     background-repeat: no-repeat;
 }
-.field1 > .card-place:first-of-type{
+.field1 > .card-slot:first-of-type{
     transform: rotateZ(35deg) translateY(-50px);
 }
-.field1 > .card-place:last-of-type{
+.field1 > .card-slot:last-of-type{
     transform: rotateZ(-35deg) translateY(-50px);
 }
-.field2 > .card-place:first-of-type{
+.field2 > .card-slot:first-of-type{
     transform: rotateZ(-35deg) translateY(50px);
 }
-.field2 > .card-place:last-of-type{   
+.field2 > .card-slot:last-of-type{   
     transform: rotateZ(35deg) translateY(50px);
 }
 

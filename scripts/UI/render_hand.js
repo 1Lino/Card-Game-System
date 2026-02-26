@@ -65,6 +65,10 @@ function renderCardsToHand(state_obj){
         const card = document.createElement("div");
         card.className = "card";
         card.dataset.hoverable = "true";
+        card.dataset.component = "card";
+        card.dataset.owner = state_obj.turn.player;
+        card.dataset.state = "in-hand";
+        card.dataset.index = amount; // index do card na mão, para referência futura em interações com a UI.
         hand.appendChild(card);
     }
     console.log(`Cards rendered to ${isPlayer ? 'player' : 'enemy'} hand.`);
