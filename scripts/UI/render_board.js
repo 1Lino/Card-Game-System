@@ -1,4 +1,5 @@
 // o valor de cada "data-" deve ser definido neste objeto, para fins de manutenção.
+// qualquer alteração deve ser feita aqui e não no HTML, para evitar bugs relacionados a erros de digitação ou inconsistências.
 const TOKEN = {
     dataComponent: {
         hand: 'hand',
@@ -13,8 +14,20 @@ const TOKEN = {
     },
     dataOwner: {player: 'player', enemy: 'enemy'},
     dataHoverable: true,
-    dataPhase: {draw: 'draw', main: 'main', battle: 'battle', end: 'end'}
+    dataPhase: {draw: 'draw', main: 'main', battle: 'battle', end: 'end'},
+    dataOccupied: {
+        true: 'true',
+        false: 'false'
+    }
 };
+
+// Object.freeze é usado para garantir que o objeto TOKEN e suas propriedades não sejam modificados acidentalmente em outras partes do código, o que ajuda a manter a consistência e evitar bugs relacionados a alterações inesperadas. 
+// vale lembrar que 'const' não garante imutabilidade de objetos, apenas impede a reatribuição da variável.
+Object.freeze(TOKEN);
+Object.freeze(TOKEN.dataComponent);
+Object.freeze(TOKEN.dataOwner);
+Object.freeze(TOKEN.dataPhase);
+Object.freeze(TOKEN.dataOccupied);
 
 export function GameBoard() {
     return `

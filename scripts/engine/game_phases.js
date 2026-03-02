@@ -44,7 +44,7 @@ export async function drawPhase(state_obj){
             }
         });
 
-        // seta o 'player' de volta para o player atual de state_obj:
+        // fix v13.5: seta o 'player' de volta para o player atual de state_obj:
         state = {
             ...state, 
             turn: {
