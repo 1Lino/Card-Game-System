@@ -3,7 +3,7 @@ import {updateHandUI} from '/scripts/UI/render_hand.js';
 import {drawCard} from '/scripts/actions/draw_card.js';
 
 export async function drawPhase(state_obj){
-    let state = {};
+    let state = {...state_obj};
 
     // se for o primeiro turno do duelo, ambos os jogadores devem puxar os cards iniciais.
     if (state_obj.flags.isFirstTurn){
@@ -34,7 +34,7 @@ export async function drawPhase(state_obj){
             }
         });
         
-        // Por último, atualiza o estado novamente, com os parâmetros do inimigo, e muda a fase para main.:
+        // Atualiza o estado novamente, com os parâmetros do inimigo, e muda a fase para main.:
         state = drawCard({
             ...state, 
             turn: {
@@ -44,7 +44,18 @@ export async function drawPhase(state_obj){
             }
         });
 
+        // seta o 'player' de volta para o player atual de state_obj:
+        state = {
+            ...state, 
+            turn: {
+                ...state.turn,
+                player: state_obj.turn.player,
+            }
+        };
+
         console.log(state);
+        console.log(`Draw phase ended! \nCurrent phase: ${state.turn.phase}`);
+        console.log(`Player: ${state.turn.player}`);
         return {...state}; // e então retorna o resultado final do estado: mão do jogador e mão do inimigo atualizadas.
     }
 
@@ -52,6 +63,13 @@ export async function drawPhase(state_obj){
     updateHandUI({ ...state});
     state = drawCard({...state});
 
-    console.log(state);
+    //console.log(state);
+    //console.log(`Draw phase ended! \nCurrent phase: ${state.turn.phase}`);
     return {...state};
+}
+
+export async function mainPhase(state_obj){
+    let state = {...state_obj};
+
+    // TODO...
 }
