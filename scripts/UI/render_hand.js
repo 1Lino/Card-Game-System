@@ -51,13 +51,14 @@ function drawAnimation(state_obj){
             console.log("Draw animation ended, promise resolved!");
             resolve(); // resolve a promise para que a função updateHandUI possa continuar e atualizar a UI com os cards na mão.
         }
-        
     });
 }
 
 function renderCardsToHand(state_obj){
-    if (state_obj[state_obj.turn.player].actions.drawsRemaining === 0) return;
+    console.log('Received state for renderCardsToHand:', state_obj); 
 
+    if (state_obj[state_obj.turn.player].actions.drawsRemaining === 0) return;
+    
     const isPlayer = state_obj.turn.player === 'player';
     const hand = document.querySelector(isPlayer ? '.hand1' : '.hand2');
 
@@ -70,6 +71,9 @@ function renderCardsToHand(state_obj){
         card.dataset.state = "in-hand";
         card.dataset.index = amount; // index do card na mão, para referência futura em interações com a UI.
         hand.appendChild(card);
+        //console.log('Cards', state_obj);
+        
     }
+
     console.log(`Cards rendered to ${isPlayer ? 'player' : 'enemy'} hand.`);
 }

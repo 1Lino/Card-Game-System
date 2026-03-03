@@ -5,7 +5,7 @@ attacksRemaining: 1
 drawsRemaining: 0
 normalSummonsRemaining: 1
 
-// e o turno deve ser 'main'. Dito isto, se for verificado que a fase atual é main e que normalSummonsRemaining é maior do que 0, o player poderá usar um card de sua mão. Assim, ocorrerá o seguinte:
+// e o turno deve ser 'main'. Dito isto, se for verificado que a fase atual é 'main' e que normalSummonsRemaining é maior do que 0, o player poderá usar um card de sua mão. Assim, ocorrerá o seguinte:
 // -ao selecionar um card com um clique de mouse, deverá aparecer um prompt de summon logo acima do card.
 // -se o summon for confirmado, este card deve ser removido da array de hand e adicionado à array de field do jogador.
 // -quando normalSummonsRemaining chegar a zero, o jogador não poderá mais fazer esse processo. Ou seja, aquele prompt só
@@ -13,3 +13,9 @@ normalSummonsRemaining: 1
 // -Tanto o aparecimento do prompt como a animação de summon são coisas relacionadas à UI, e deverão ser trabalhadas 
 //  no  render_field. O que se refere à manipulação das arrays e do estado, isto será feito aqui neste arquivo. Seguindo
 //  o exemplo de draw_card.
+
+
+// função deve receber o estado atual para que seja alterado, e também o data-index do card na mão.
+function useCard(state_obj, card_id){
+
+}

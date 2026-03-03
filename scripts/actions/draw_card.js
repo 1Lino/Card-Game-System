@@ -42,6 +42,7 @@ export function drawCard(state_obj){
             stats.enemy.hand.push(stats.enemy.deck.pop());
         }
         stats.enemy.actions.drawsRemaining = 0;
+
     }
 
     return {...stats};
