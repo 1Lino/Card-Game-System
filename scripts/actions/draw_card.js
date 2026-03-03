@@ -24,7 +24,18 @@ export function drawCard(state_obj){
         for (let i = 0; i < stats.player.actions.drawsRemaining && stats.player.deck.length > 0; i++){
             stats.player.hand.push(stats.player.deck.pop());
         }
-        stats.player.actions.drawsRemaining = 0;
+        
+        // reseta o número de cards que pode puxar:
+        stats = {
+            ...stats,
+            player: {
+                ...stats.player,
+                actions: {
+                    ...stats.player.actions, 
+                    drawsRemaining: 0
+                }
+            }
+        }
     }
     if (state_obj.turn.player === 'enemy'){
         if (!state_obj?.enemy.deck?.length) return {...state_obj};
@@ -41,7 +52,18 @@ export function drawCard(state_obj){
         for (let i = 0; i < stats.enemy.actions.drawsRemaining && stats.enemy.deck.length > 0; i++){
             stats.enemy.hand.push(stats.enemy.deck.pop());
         }
-        stats.enemy.actions.drawsRemaining = 0;
+        
+        // reseta o número de cards que pode puxar:
+        stats = {
+            ...stats,
+            enemy: {
+                ...stats.enemy,
+                actions: {
+                    ...stats.enemy.actions, 
+                    drawsRemaining: 0
+                }
+            }
+        }
 
     }
 
