@@ -8,29 +8,27 @@ export async function drawPhase(state_obj){
 
     // se for o primeiro turno do duelo, ambos os jogadores devem puxar os cards iniciais.
     if (state_obj.flags.isFirstTurn){
-        // após a atualização da UI, atualiza o estado para a próxima interação com a UI:
 
-        // Atualiza o estado novamente, com os parâmetros do inimigo, e muda a fase para main.:
+        // Atualiza o estado com parâmetros do inimigo:
         state = drawCard({
             ...state, 
             turn: {
                 ...state.turn,
-                player: 'enemy',
+                player: 'enemy'
+            }
+        });
+        
+        // Atualiza o estado com parâmetros do jogador:
+        state = drawCard({
+            ...state, 
+            turn: {
+                ...state.turn,
+                player: 'player',
                 phase: 'main'
             }
         });
-        // após a atualização da UI, atualiza o estado para a próxima interação com a UI:
-        state = drawCard({
-            ...state, 
-            turn: {
-                ...state.turn,
-                player: 'player'
-            }
-        });
 
-
-        // passa o novo estado já atualizado para a próxima atualização de UI, no caso, a da mão do inimigo:
-        // lembre o seguinte: updateHandUI só vai ler o estado, não alterar.
+        // Atualiza a UI da mão do inimigo, executando animação e renderização de cards.
         await updateHandUI({
             ...state, 
             turn: {
@@ -41,22 +39,23 @@ export async function drawPhase(state_obj){
                 ...state.enemy,
                 actions: {
                     ...state.enemy.actions,
-                    drawsRemaining: 3 // já que este estado é zerado pela drawCard, é necessário explicitar 
+                    drawsRemaining: state_obj.enemy.actions.drawsRemaining // já que este estado é zerado pela drawCard, é necessário explicitar qual era o número original de cards a ser puxado no início do turno, para que a UI possa mostrar isso corretamente.
                 }
             }
         });
 
+        // Atualiza a UI da mão do jogador, executando animação e renderização de cards.
         await updateHandUI({
-            ...state_obj, 
+            ...state, 
             turn: {
-                ...state_obj.turn,
+                ...state.turn,
                 player: 'player'
             },
             player: {
                 ...state.player,
                 actions: {
                     ...state.player.actions,
-                    drawsRemaining: 3
+                    drawsRemaining: state_obj.player.actions.drawsRemaining 
                 }
             }
         });
@@ -65,7 +64,9 @@ export async function drawPhase(state_obj){
         console.log(`Draw phase ended! \nCurrent phase: ${state.turn.phase}`);
         console.log(`Player: ${state.turn.player}`);
 
-        return {...state}; // e então retorna o resultado final do estado: mão do jogador e mão do inimigo atualizadas.
+        // e então retorna o resultado final do estado: mão do jogador e mão do inimigo atualizadas.
+        // esse novo estado será usado para as próximas fases do turno.
+        return {...state}; 
     }
 
     // caso não seja o primeiro turno, apenas o jogador da vez puxa os cards, e a UI é atualizada de acordo.

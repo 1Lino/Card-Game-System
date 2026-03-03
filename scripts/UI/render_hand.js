@@ -1,14 +1,5 @@
 // funções relacionadas à interface do jogo, como atualizações de UI, animações, etc., serão definidas aqui. As funções de UI serão chamadas pelas fases do jogo, e a game_engine irá controlar as fases, portanto, indiretamente, as funções de UI também.
 
-// esse event listener pode ser reaproveitado futuramente.
-/*deck.addEventListener('click', () => {
-    if (state.turn.player !== 'player') return;
-    state = drawCard(state);
-    updateHandUI(state);
-    console.log(state);
-});*/
-
-
 // já que essa função é assíncrona, ela aguarda pelo retorno de uma promise, que é resolvida quando a animação de puxar o card termina. Assim, a UI só é atualizada quando a animação termina, e não antes, o que evita bugs visuais.
 export async function updateHandUI(state_obj){
     await drawAnimation(state_obj);
@@ -55,7 +46,8 @@ function drawAnimation(state_obj){
 }
 
 function renderCardsToHand(state_obj){
-    console.log('Received state for renderCardsToHand:', state_obj); 
+    console.group(`Received state to render cards to ${state_obj.turn.player}: `);
+    console.log(state_obj); 
 
     if (state_obj[state_obj.turn.player].actions.drawsRemaining === 0) return;
     
@@ -69,11 +61,11 @@ function renderCardsToHand(state_obj){
         card.dataset.component = "card";
         card.dataset.owner = state_obj.turn.player;
         card.dataset.state = "in-hand";
-        card.dataset.index = amount; // index do card na mão, para referência futura em interações com a UI.
+        card.dataset.index = state_obj[state_obj.turn.player].hand[amount]; // index do card na mão, para referência futura em interações com a UI.
         hand.appendChild(card);
-        //console.log('Cards', state_obj);
-        
+        console.log(card);
     }
 
     console.log(`Cards rendered to ${isPlayer ? 'player' : 'enemy'} hand.`);
+    console.groupEnd();
 }
