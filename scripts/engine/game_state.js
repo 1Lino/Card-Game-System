@@ -23,13 +23,7 @@ const GAME_STATE = {
         life: 100,
         deck: ['id1', 'id2', 'id3', 'id4', 'id5', 'id6'],
         hand: [],
-        field: [{  // no campo, os cards deverão ter estado próprio, então toda vez que um card entrar em campo, seus dados devem ser usados pra criar um objeto desse tipo aqui (exemplo):
-                    instanceId: 'a1f8',
-                    cardId: 'id1',
-                    currentATK: 20,
-                    currentDEF: 20,
-                    hasAttacked: false,
-                }],
+        field: [],
         grave: [],
         actions: {
             drawsRemaining: 3,
@@ -51,49 +45,53 @@ const GAME_STATE = {
         }
     },
 
-    ui: {
-        selectedCardId: null,
-        hoveredCardId: null,
-        selectableTargets: [],
-    }, 
-
     selection: {
-    selectedPlayerCardId: undefined, 
-    selectedEnemyCardId: undefined,
-    cardOwner: {
-        player: 'player-card',
-        enemy: 'enemy-card'
+        hoveredCardId: null,
+        selectedPlayerCardId: undefined, 
+        selectedEnemyCardId: undefined,
+        cardOwner: {
+            player: 'player-card',
+            enemy: 'enemy-card'
+        },
+        selectableTargets: [],
     }
-}
 
 }
 
 // =============================================FUNÇÕES AUXILIARES ==============================================
 // Encapsulamento de estado do jogo, de modo que ele não seja acessível diretamente por outros arquivos, e sim apenas por meio de um getter. O jogo irá basicamente usar uma cópia do estado.
 
-// deep copy:
-export function getGameState(){
+// returna uma cópia profunda de game_state, por precaução:
+export function getGameState(state_obj){
+    const state = state_obj ? {...state_obj} : {...GAME_STATE};
     return {
-        ...GAME_STATE,
+        ...state,
+        gameStatus: {...state.gameStatus},
+        flags: {...state.flags},
+        turn: {...state.turn},
         player: {
-            ...GAME_STATE.player,
-            deck: [...GAME_STATE.player.deck],
-            hand: [...GAME_STATE.player.hand],
-            field: [...GAME_STATE.player.field],
-            grave: [...GAME_STATE.player.grave],
-            actions: {...GAME_STATE.player.actions},
+            ...state.player,
+            deck: [...state.player.deck],
+            hand: [...state.player.hand],
+            field: [...state.player.field],
+            grave: [...state.player.grave],
+            actions: {...state.player.actions},
         }, 
         enemy: {
-            ...GAME_STATE.enemy,
-            deck: [...GAME_STATE.enemy.deck],
-            hand: [...GAME_STATE.enemy.hand],
-            field: [...GAME_STATE.enemy.field],
-            grave: [...GAME_STATE.enemy.grave],
-            actions: {...GAME_STATE.enemy.actions},
+            ...state.enemy,
+            deck: [...state.enemy.deck],
+            hand: [...state.enemy.hand],
+            field: [...state.enemy.field],
+            grave: [...state.enemy.grave],
+            actions: {...state.enemy.actions},
+        }, 
+        cardOwner: {
+            player: state.selection.player,
+            enemy: state.selection.enemy
         },
-        turn: {...GAME_STATE.turn},
-        flags: {...GAME_STATE.flags},
-        gameStatus: {...GAME_STATE.gameStatus},
-        ui: {...GAME_STATE.ui},
+        selection: {
+            ...state.selection,
+            selectableTargets: []
+        },
     };
 }

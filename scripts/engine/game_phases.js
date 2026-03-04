@@ -60,9 +60,14 @@ export async function drawPhase(state_obj){
             }
         });
 
-        console.log('State after draw phase', state);
-        console.log(`Draw phase ended! \nCurrent phase: ${state.turn.phase}`);
-        console.log(`Player: ${state.turn.player}`);
+        console.log('Draw phase ended!')
+        console.group('Received state for main phase:');
+        console.log('Game state:', state);
+        console.log(`Current player: ${state.turn.player}`);
+        console.log(`Current turn: ${state.turn.count}`);
+        console.log(`Current phase: ${state.turn.phase}`);
+        console.log(`Can summon: ${state[state.turn.player].actions.normalSummonsRemaining} card(s)`);
+        console.groupEnd();
 
         // e então retorna o resultado final do estado: mão do jogador e mão do inimigo atualizadas.
         // esse novo estado será usado para as próximas fases do turno.
@@ -70,11 +75,10 @@ export async function drawPhase(state_obj){
     }
 
     // caso não seja o primeiro turno, apenas o jogador da vez puxa os cards, e a UI é atualizada de acordo.
+    // TODO: esta sessão deve ser testada e atualizada.
     updateHandUI({ ...state});
     state = drawCard({...state});
 
-    //console.log(state);
-    //console.log(`Draw phase ended! \nCurrent phase: ${state.turn.phase}`);
     return {...state};
 }
 

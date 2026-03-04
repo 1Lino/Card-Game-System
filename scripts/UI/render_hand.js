@@ -46,8 +46,8 @@ function drawAnimation(state_obj){
 }
 
 function renderCardsToHand(state_obj){
-    console.group(`Received state to render cards to ${state_obj.turn.player}: `);
-    console.log(state_obj); 
+    console.group(`Received state to render cards to ${state_obj.turn.player}'s hand: `);
+    console.log(state_obj[state_obj.turn.player]); 
 
     if (state_obj[state_obj.turn.player].actions.drawsRemaining === 0) return;
     
