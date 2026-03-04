@@ -1,24 +1,8 @@
 // Aqui ficarão as funções relacionadas ao uso de cards. Nada complexo: basicamente verificar estado, verificar condições de uso de card, e quantos cards se pode usar nesta fase, etc. Então atualizar o estado e então a UI.
+import { getGameState } from "/scripts/engine/game_state.js";
 
 export function useCard(state_obj, card_id){
-    const state = {
-        ...state_obj,
-            turn: {...state_obj.turn},
-            player: {
-                ...state_obj.player,
-                hand: [...state_obj.player.hand],
-                field: [...state_obj.player.field],
-                grave: [...state_obj.player.grave],
-                actions: {...state_obj.player.actions},
-            }, 
-            enemy: {
-                ...state_obj.enemy,
-                hand: [...state_obj.enemy.hand],
-                field: [...state_obj.enemy.field],
-                grave: [...state_obj.enemy.grave],
-                actions: {...state_obj.enemy.actions},
-            },
-        };
+    const state = getGameState(state_obj);
     
     if (
         state.turn.phase !== 'main' 

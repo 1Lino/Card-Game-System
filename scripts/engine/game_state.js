@@ -1,6 +1,4 @@
-
-// utilizar conceitos de imutabilidade ao lidar com variáveis de estado, ou seja, nunca modificar os atributos diretamente.
-// os decks, neste estado, devem conter apenas os ids dos cards, para puxar as informações dos cards diretamente
+// Os decks, neste estado, devem conter apenas os ids dos cards, para puxar as informações dos cards diretamente
 // de um json ou outra base de dados qualquer.
 const GAME_STATE = {
     gameStatus: {
@@ -58,10 +56,7 @@ const GAME_STATE = {
 
 }
 
-// =============================================FUNÇÕES AUXILIARES ==============================================
-// Encapsulamento de estado do jogo, de modo que ele não seja acessível diretamente por outros arquivos, e sim apenas por meio de um getter. O jogo irá basicamente usar uma cópia do estado.
-
-// returna uma cópia profunda de game_state, por precaução:
+// returna uma cópia profunda de game_state, para que os demais módulos possam manipular o estado sem correr o risco de causar mutações acidentais no estado original, o que pode levar a bugs difíceis de rastrear.:
 export function getGameState(state_obj){
     const state = state_obj ? {...state_obj} : {...GAME_STATE};
     return {
@@ -95,3 +90,38 @@ export function getGameState(state_obj){
         },
     };
 }
+
+
+/*
+IMPORTANTE — Sobre imutabilidade: shallow copy vs deep copy:
+
+O operador spread ({ ...obj }) cria apenas uma cópia rasa do objeto.
+Isso significa que:
+
+- Propriedades primitivas (number, string, boolean, etc.) são copiadas por valor.
+- Arrays e objetos internos são copiados por referência.
+
+Exemplo:
+const copy = { ...state };
+
+Se state possui arrays ou objetos internos, eles continuarão apontando
+para as mesmas referências em memória.
+
+Consequência:
+Modificar arrays internos (push, pop, splice, etc.) pode mutar
+o estado original, mesmo que o objeto externo tenha sido "copiado".
+
+Isso pode causar bugs difíceis de detectar, especialmente em sistemas
+reativos que dependem de comparação por referência (===) para detectar mudanças.
+
+Para garantir imutabilidade real, é necessário:
+- Criar novos arrays/objetos internos manualmente (deep copy):
+
+{
+...state, 
+deck: [...state.deck],
+hand: [...state.hand]
+}
+
+Isto é necessário porque operador spread (...) copia a estrutura externa, mas NÃO clona profundamente.
+*/
