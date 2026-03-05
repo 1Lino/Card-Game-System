@@ -1,3 +1,8 @@
+// disable copilot for this.
 {
-  "github.copilot.nextEditSuggestions.enabled": false
+  "github.copilot.enable": {
+    "*": false
+  },
+  "github.copilot.inlineSuggest.enable": false,
+  "github.copilot.editor.enableAutoCompletions": false
 }

@@ -62,10 +62,25 @@ function renderCardsToHand(state_obj){
         card.dataset.owner = state_obj.turn.player;
         card.dataset.state = "in-hand";
         card.dataset.index = state_obj[state_obj.turn.player].hand[amount]; // index do card na mão, para referência futura em interações com a UI.
+        card.onclick = isPlayer ? () => showDetailPrompt(card) : "";
         hand.appendChild(card);
         console.log(card);
     }
 
     console.log(`Cards rendered to ${isPlayer ? 'player' : 'enemy'} hand.`);
     console.groupEnd();
+}
+
+// protótipo para prompt box que deve ser renderizado acima do card ao clicar no card.
+function showDetailPrompt(card){
+    const rect = card.getBoundingClientRect();
+    const x = rect.left;
+    const y = rect.top;
+    const w = rect.width;
+    const h = rect.height;
+    const gap = 20;
+    alert(`Card rendered at X: ${x} | Y: ${y}
+        \nPrompt will be rendered at X: ${x} | Y: ${y-gap}
+        \nPrompt Width dimension will be: ${w} / 2
+        \nPrompt Height dimension will be: ${h} / 4`);
 }

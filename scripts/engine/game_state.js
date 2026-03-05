@@ -99,7 +99,8 @@ O operador spread ({ ...obj }) cria apenas uma cópia rasa do objeto.
 Isso significa que:
 
 - Propriedades primitivas (number, string, boolean, etc.) são copiadas por valor.
-- Arrays e objetos internos são copiados por referência.
+- Arrays e objetos internos são copiados por referência, ou seja, ainda que uma array seja declarada como const, este
+  const aponta para uma referência, você não pode reatribuir valor para aquela referência, mas pode modificar seu conteúdo (pois array é uma referência que aponta para vários lugares na memória, e estes lugares são mutáveis).
 
 Exemplo:
 const copy = { ...state };
