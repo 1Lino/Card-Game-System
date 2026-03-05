@@ -65,7 +65,6 @@ body{
 
 .flat-perspective{
     position: absolute;
-    /*border: 1px solid red;*/
     width: 100%;
     z-index: 1;
 }
@@ -199,14 +198,6 @@ body{
     align-items: center;
 }
 
-/*.fields{
-    display: flex;
-    flex-direction: row;
-    justify-content:space-around;
-    align-items: center;
-    border-radius: 5px;
-    
-}*/
 .field2{
     border-top-left-radius: 50%;
     border-top-right-radius: 50%;
@@ -298,3 +289,11 @@ body{
     align-items: center;
 }
 
+.promptBox{
+    display: flex;
+    flex-direction: column;
+    background-color: gray;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+}

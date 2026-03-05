@@ -62,7 +62,7 @@ function renderCardsToHand(state_obj){
         card.dataset.owner = state_obj.turn.player;
         card.dataset.state = "in-hand";
         card.dataset.index = state_obj[state_obj.turn.player].hand[amount]; // index do card na mão, para referência futura em interações com a UI.
-        card.onclick = isPlayer ? () => showDetailPrompt(card) : "";
+        card.onclick = isPlayer ? () => showCardDetailOn(card, hand) : "";
         hand.appendChild(card);
         console.log(card);
     }
@@ -71,16 +71,47 @@ function renderCardsToHand(state_obj){
     console.groupEnd();
 }
 
-// protótipo para prompt box que deve ser renderizado acima do card ao clicar no card.
-function showDetailPrompt(card){
+// TODO: prompt box só deverá seguir lógica de toggle, ou seja, se já houver um prompt box ativado,
+// este prompt ativo deve ser eliminado e então recriado nas coordenadas indicadas. Um simples condicional faz essa 
+// verificação.
+function showCardDetailOn(card, hand){
+    const coordsAndDimensions = getCoordsAndDimensionsFrom(card);
+    hand.appendChild(renderCardDetailPromptAt(coordsAndDimensions));
+}
+
+function getCoordsAndDimensionsFrom(card){
     const rect = card.getBoundingClientRect();
     const x = rect.left;
     const y = rect.top;
     const w = rect.width;
     const h = rect.height;
     const gap = 20;
+    
+    return {x, y, w, h, gap};
+}
+
+function renderCardDetailPromptAt(coordsAndDimensions){
+    const {x, y, w, h, gap} = coordsAndDimensions;
+    const customStyle = `
+        width: ${w}px;
+        height: ${h/2}px;
+        left: ${x}px;
+        top: ${y - 520 - gap}px;
+    `;
+
+    const detailPromptBox = document.createElement("div");
+    detailPromptBox.className = "promptBox";
+    detailPromptBox.style = customStyle;
+    detailPromptBox.dataset.component = 'promptBox';
+    detailPromptBox.innerHTML = `
+        <p>Details...</p>
+        <p>Summon...</p>
+    `;
+
     alert(`Card rendered at X: ${x} | Y: ${y}
         \nPrompt will be rendered at X: ${x} | Y: ${y-gap}
         \nPrompt Width dimension will be: ${w} / 2
         \nPrompt Height dimension will be: ${h} / 4`);
+
+    return detailPromptBox;
 }
