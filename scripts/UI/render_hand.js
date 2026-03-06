@@ -62,7 +62,7 @@ function renderCardsToHand(state_obj){
         card.dataset.owner = state_obj.turn.player;
         card.dataset.state = "in-hand";
         card.dataset.index = state_obj[state_obj.turn.player].hand[amount]; // index do card na mão, para referência futura em interações com a UI.
-        card.onclick = isPlayer ? () => showCardDetailOn(card, hand) : "";
+        card.onclick = isPlayer ? () => showCardDetailOn(card, hand) : ""; 
         hand.appendChild(card);
         console.log(card);
     }
@@ -108,10 +108,10 @@ function renderCardDetailPromptAt(coordsAndDimensions){
         <p>Summon...</p>
     `;
 
-    alert(`Card rendered at X: ${x} | Y: ${y}
+    /*console.log(`Card rendered at X: ${x} | Y: ${y}
         \nPrompt will be rendered at X: ${x} | Y: ${y-gap}
         \nPrompt Width dimension will be: ${w} / 2
-        \nPrompt Height dimension will be: ${h} / 4`);
+        \nPrompt Height dimension will be: ${h} / 4`);*/
 
     return detailPromptBox;
 }
