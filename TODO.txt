@@ -28,5 +28,6 @@
 (x) 12. transformar todas as cópias profundas do game_state numa função, de modo a evitar repetições de estruturas e evitar possíveis erros de sintaxe. Usar a função getGameState pra isso, pois ela basicamente já cria uma cópia profunda do game_state.
 () 13. criar animações de summon e funções de renderização do card no campo. Como use_card já está funcionando, posso usar o estado retornado por ela para fazer os testes de renderização.
 () 14. começar a trabalhar no reducer enquanto o projeto está pequeno.
+() 15. A propriedade "hoverable" só deve ser aplicada aos campos (slots) caso estejam vazios. Se houver card em cima, somente o card deve possuir tal propriedade.
 
 

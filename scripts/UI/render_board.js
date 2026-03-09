@@ -4,6 +4,7 @@ const TOKEN = {
     dataComponent: {
         hand: 'hand',
         deck: 'deck',
+        stack: 'card-stack',
         field: 'field',
         graveyard: 'graveyard',
         status: 'status',
@@ -56,7 +57,7 @@ export function GameBoard() {
 
                     <div class="grid deck1" data-component="${TOKEN.dataComponent.deck}" data-owner="${TOKEN.dataOwner.player}">
                         <div class="card-slot no-pointer">
-                            <div class="card deck-stack" data-hoverable="${TOKEN.dataHoverable}">
+                            <div class="card deck-stack" data-component="${TOKEN.dataComponent.stack}" data-hoverable="${TOKEN.dataHoverable}" data-owner="${TOKEN.dataOwner.player}">
                                 <div class="card-back"></div>
                             </div>
                         </div>
@@ -64,7 +65,7 @@ export function GameBoard() {
 
                     <div class="grid deck2" data-component="${TOKEN.dataComponent.deck}" data-owner="${TOKEN.dataOwner.enemy}">
                         <div class="card-slot no-pointer">
-                            <div class="card deck-stack2" data-hoverable="${TOKEN.dataHoverable}">
+                            <div class="card deck-stack2" data-component="${TOKEN.dataComponent.stack}" data-hoverable="${TOKEN.dataHoverable}" data-owner="${TOKEN.dataOwner.enemy}">
                                 <div class="card-back"></div>
                             </div>
                          </div>

@@ -52,6 +52,11 @@ const GAME_STATE = {
             enemy: 'enemy-card'
         },
         selectableTargets: [],
+    },
+
+    event: {
+        hover: false,
+        click: false
     }
 
 }
@@ -88,6 +93,9 @@ export function getGameState(state_obj){
             ...state.selection,
             selectableTargets: []
         },
+        event: {
+            ...state.event
+        }
     };
 }
 
