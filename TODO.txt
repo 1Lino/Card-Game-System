@@ -29,5 +29,6 @@
 () 13. criar animações de summon e funções de renderização do card no campo. Como use_card já está funcionando, posso usar o estado retornado por ela para fazer os testes de renderização.
 () 14. começar a trabalhar no reducer enquanto o projeto está pequeno.
 () 15. A propriedade "hoverable" só deve ser aplicada aos campos (slots) caso estejam vazios. Se houver card em cima, somente o card deve possuir tal propriedade.
+() 16. render_hand e render_field são arquivos separados, mas devem ser reduzidos a um só futuramente: render_cards (conterá todas as funções e rotinas relacionadas a renderização de cards e outros elementos relacionados aos cards).
 
 

@@ -7,20 +7,20 @@
 import { getGameState } from '/scripts/engine/game_state.js';
 import { drawPhase } from '/scripts/engine/game_phases.js';
 import { useCard } from '/scripts/actions/use_card.js';
-import { handleMouseEvent, toggleEventState } from '/scripts/actions/handle_events.js';
+import { handleMouseEvent, toggleMouseEventState } from '/scripts/actions/handle_events.js';
 
 let state = getGameState();
 
 document.body.addEventListener('mouseover', node => {
-    state = toggleEventState(state, 'hover');
+    state = toggleMouseEventState(state, 'hover');
     handleMouseEvent(node, 'mouseover', state)});
 
 document.body.addEventListener('mouseout', node => {
-    state = toggleEventState(state, 'hover');
+    state = toggleMouseEventState(state, 'hover');
     handleMouseEvent(node, 'mouseout', state)});
 
 document.body.addEventListener('click', node => {
-    state = toggleEventState(state, 'click');
+    state = toggleMouseEventState(state, 'click');
     handleMouseEvent(node, 'click', state)});
 
 // TESTES

@@ -99,6 +99,8 @@ function renderCardDetailPromptAt(coordsAndDimensions){
         top: ${y - 520 - gap}px;
     `;
 
+    removePreviousDetailPrompts(); 
+    
     const detailPromptBox = document.createElement("div");
     detailPromptBox.className = "promptBox";
     detailPromptBox.style = customStyle;
@@ -108,10 +110,15 @@ function renderCardDetailPromptAt(coordsAndDimensions){
         <p>Summon...</p>
     `;
 
-    /*console.log(`Card rendered at X: ${x} | Y: ${y}
-        \nPrompt will be rendered at X: ${x} | Y: ${y-gap}
-        \nPrompt Width dimension will be: ${w} / 2
-        \nPrompt Height dimension will be: ${h} / 4`);*/
+    console.log('prompt rendered upon click!');
 
     return detailPromptBox;
+}
+
+// por hora esta função só funciona no escopo de cards da mão, mas os demais slots de campo também deverão receber ela
+// em seu onClick.
+export function removePreviousDetailPrompts(){
+    document.querySelectorAll('[data-component="promptBox"]').forEach(prompt => {
+        prompt.remove();
+    });
 }

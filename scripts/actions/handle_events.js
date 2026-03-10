@@ -20,7 +20,7 @@ export function handleMouseEvent(node, event, state_obj){
     }
 }
 
-export function toggleEventState(state_obj, event){
+export function toggleMouseEventState(state_obj, event){
     const state = getGameState(state_obj);
     state.event[event] = !state.event[event];
     return state;
@@ -39,6 +39,11 @@ function hoverAnimation(node, state_obj){
 // selecionado. Na fase de batalha, uma lógica a mais deve ser elaborada.
 function onMouseClick(node, state_obj) {
 
+    // teste
+    document.querySelectorAll('[data-hoverable][data-component="card"]').forEach(el => {
+        el.innerHTML = '';
+    })
+
     if (node.dataset.owner === 'player' &&
         node.dataset.component === 'card' && 
         node.dataset.state === 'in-hand' 
@@ -48,5 +53,5 @@ function onMouseClick(node, state_obj) {
         console.log(`Clicked on card with id of ${node.dataset.index}.`);
         console.log(`Is selected: ${state_obj.event.click}.`);
         // testes
-    }
+    } 
 }
