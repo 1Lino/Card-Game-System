@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Summon Animation Mockup</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #1e1e1e;
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+      }
+
+      .board {
+        position: relative;
+        width: 600px;
+        height: 500px;
+        border: 1px dashed #555;
+      }
+
+      .hand, .field {
+        position: absolute;
+        width: 500px;
+        height: 140px;
+        border: 2px solid #aaa;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hand {
+        left: 1%;
+        bottom: 1%;
+        background: #222;
+      }
+
+      .field{
+        left: 1%;
+        top: 1%;
+        background: #222;
+      }
+
+      .card {
+        width: 80px;
+        height: 120px;
+        background: white;
+        border-radius: 6px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+
+        &:hover{
+          cursor: pointer;
+          transform: scale(1.1);
+        }
+      }
+
+      .flying {
+        position: absolute;
+        top: 90px;
+        left: 60px;
+        z-index: 10;
+        opacity: 0.5;
+        transform: translate(0, 0);
+        transition:
+          transform 0.6s cubic-bezier(.3,.8,.3,1),
+          opacity 0.5s ease;
+      }
+
+      .flying.move {
+        transform: translate(360px, -40px) rotate(8deg);
+        opacity: 1;
+      }
+
+      .flying.hidden {
+        transition: none;
+        opacity: 1;
+        transform: translate(0, 0);
+      }
+
+      button {
+        margin-top: 20px;
+        padding: 8px 14px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="board">
+      <div class="field"></div>
+      <div class="hand">
+        <div class="card" data-index="card1" data-component="card" data-state="in-hand"></div>
+        <div class="card" data-index="card2" data-component="card" data-state="in-hand"></div>
+        <div class="card" data-index="card3" data-component="card" data-state="in-hand"></div>
+      </div>
+    </div>
+
+    <button id="summon">Usar carta</button>
+
+    <script>
+      const hand = document.querySelector('.hand');
+      const field = document.querySelector('.field');
+
+      document.querySelectorAll('[data-component="card"]').forEach(card => {
+        card.onclick = () => summonCard(card);
+      });
+
+      async function summonCard(card){
+        if (card.dataset.state === 'in-hand'){
+          card.dataset.state = 'in-field';
+
+          console.group(`Summon of ${card.dataset.index}`);
+          hand.querySelector(`[data-index=${card.dataset.index}]`).remove();
+          console.log(`${card.dataset.index} removed from hand!`);
+
+          await summonAnimation();
+
+          field.insertAdjacentElement('beforeend', card);
+          console.log(`${card.dataset.index} added to field!`);
+          console.groupEnd();
+        }
+      };
+
+      async function summonAnimation(){
+        return new Promise(resolve => {
+            console.log('Summon animation done!');
+            resolve();
+          }
+        );
+      }
+      
+    </script>
+  </body>
+</html>
