@@ -19,10 +19,6 @@ export function useCard(state_obj, card_id){
 }
 
 
-
-
-
-
 // NOTAS.:
 // por padrão, após a draw fase, o status de action do jogador (player ou inimigo) deve estar assim:
 attacksRemaining: 1

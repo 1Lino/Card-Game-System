@@ -59,34 +59,16 @@
         }
       }
 
-      .flying {
-        position: absolute;
-        top: 90px;
-        left: 60px;
-        z-index: 10;
-        opacity: 0.5;
-        transform: translate(0, 0);
-        transition:
-          transform 0.6s cubic-bezier(.3,.8,.3,1),
-          opacity 0.5s ease;
-      }
-
-      .flying.move {
-        transform: translate(360px, -40px) rotate(8deg);
-        opacity: 1;
-      }
-
-      .flying.hidden {
-        transition: none;
-        opacity: 1;
-        transform: translate(0, 0);
-      }
-
-      button {
+      .button {
         margin-top: 20px;
         padding: 8px 14px;
         cursor: pointer;
       }
+
+      .selected {
+        outline: 3px dashed red;
+      }
+
     </style>
   </head>
   <body>
@@ -98,27 +80,56 @@
         <div class="card" data-index="card2" data-component="card" data-state="in-hand"></div>
         <div class="card" data-index="card3" data-component="card" data-state="in-hand"></div>
       </div>
+      
     </div>
-
-    <button id="summon">Usar carta</button>
-
+    <button class="button">Usar card</button>
     <script>
       const hand = document.querySelector('.hand');
       const field = document.querySelector('.field');
+      const board = document.querySelector('.board');
+      const button = document.querySelector('.button');
+      let selectedCard = null;
 
       document.querySelectorAll('[data-component="card"]').forEach(card => {
-        card.onclick = () => summonCard(card);
+        card.onclick = () => {
+          selectedCard = selectCard(card);
+          console.log('Selected card: ', selectedCard);
+        };
       });
 
-      async function summonCard(card){
+      button.onclick = () => {
+        try {
+          summonCard(selectedCard);
+        } catch (err) {
+          console.err(err.message);
+        }
+      };
+
+      function selectCard(card){
+        document.querySelectorAll('.card').forEach(card => card.classList.remove('selected'));
+        card.classList.toggle('selected');
+        return card.dataset.index;
+      }
+
+      async function summonCard(cardIndex){
+        if (cardIndex === null) throw new Error ('Um card precisa ser selecionado antes de ser usado!');
+
+        const card = document.querySelector(`[data-index="${cardIndex}"]`);
+
         if (card.dataset.state === 'in-hand'){
+
+          const cardCoords = {
+            top: card.getBoundingClientRect().top,
+            left: card.getBoundingClientRect().left
+          };
+
           card.dataset.state = 'in-field';
 
           console.group(`Summon of ${card.dataset.index}`);
           hand.querySelector(`[data-index=${card.dataset.index}]`).remove();
           console.log(`${card.dataset.index} removed from hand!`);
 
-          await summonAnimation();
+          await summonAnimation(cardCoords);
 
           field.insertAdjacentElement('beforeend', card);
           console.log(`${card.dataset.index} added to field!`);
@@ -126,14 +137,57 @@
         }
       };
 
-      async function summonAnimation(){
+      async function summonAnimation(coords){
         return new Promise(resolve => {
-            console.log('Summon animation done!');
-            resolve();
+
+            const style = document.querySelector('style');
+            const { top, left } = coords;
+            const startingCoords = ` 
+              .starting-coords{ 
+                position: relative;
+                bottom: ${(top/100) * 2}px;
+                z-index: 10;
+                opacity: 0.5;
+                transform: translate(0, 0);
+                transition:
+                  transform 0.6s cubic-bezier(.3,.8,.3,1),
+                  opacity 0.5s ease;
+              }
+                  
+              .move {
+                transform: translate(${(top/100) * 2}px, -300px);
+                opacity: 1;
+              }`;
+
+            const moveCoords = `
+              
+            `;
+            style.innerHTML += startingCoords;
+
+            const flyingCard = document.createElement('div');
+            flyingCard.classList.add('card', 'starting-coords');
+            hand.insertAdjacentElement('beforeend', flyingCard);
+          
+            console.log('Summon animation starts!');
+
+            requestAnimationFrame(() => {
+              flyingCard.classList.add('move');
+
+              flyingCard.addEventListener('transitionend', () => {
+                console.log('Summon animation ends!');
+                flyingCard.remove();
+                resolve();
+              }, { once: true });
+            });
           }
         );
       }
       
+      /*TODO:
+        - flyingCard deve ser criada nas coordenadas do card atual, então summonAnimation vai precisar disso. (x)
+        - pra puxar estas coordenadas, vou utilizar o método getBoundingClientRect no card. (x)
+        - daí a animação do card sendo lançado no campo deverá começar a partir destas coordenadas. ()
+      */
     </script>
   </body>
 </html>
