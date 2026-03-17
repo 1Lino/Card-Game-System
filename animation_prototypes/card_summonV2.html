@@ -165,10 +165,12 @@
 
             const flyingCard = document.createElement('div');
             flyingCard.classList.add('card', 'starting-coords');
-            //flyingCard.style.position = 'absolute';
 
+            // inserindo o objeto da animação dentro do próprio card garante que a animação ocorra nas exatas mesmas coordenadas do card.
             card.insertAdjacentElement('beforeend', flyingCard);
-            flyingCard.style.visibility = "visible";
+
+            // isto é importante para que o objeto da animação não fique invisível junto ao parente card.
+            flyingCard.style.visibility = "visible"; 
           
             console.log('Summon animation starts!');
 
@@ -189,6 +191,7 @@
         - flyingCard deve ser criada nas coordenadas do card atual, então summonAnimation vai precisar disso. (x)
         - pra puxar estas coordenadas, vou utilizar o método getBoundingClientRect no card. (x)
         - daí a animação do card sendo lançado no campo deverá começar a partir destas coordenadas. (x)
+        - é interessante que seja possível que a animação vá até as coordenadas de um slot de campo, caso exista. ()
       */
     </script>
   </body>
