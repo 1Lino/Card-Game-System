@@ -70,16 +70,27 @@
         outline: 3px dashed red;
       }
 
+      .flying-card { 
+        position: absolute;
+        z-index: 10;
+        opacity: 0.5;
+        transform: translate(0, 0);
+        transition:
+          transform 0.6s cubic-bezier(.3,.8,.3,1),
+          opacity 0.5s ease;
+      }
+          
+      .move {
+        transform: translate(0, -300px);
+        opacity: 1;
+      }
+
     </style>
   </head>
   <body>
 
     <div class="board">
-      <div class="field">
-        <div class="slot" data-component="slot" data-index="slot1" data-state="empty"></div>
-        <div class="slot" data-component="slot" data-index="slot2" data-state="empty"></div>
-        <div class="slot" data-component="slot" data-index="slot3" data-state="empty"></div>
-      </div>
+      <div class="field"></div>
       <div class="hand">
         <div class="card" data-index="card1" data-component="card" data-state="in-hand">Card1</div>
         <div class="card" data-index="card2" data-component="card" data-state="in-hand">Card2</div>
@@ -146,29 +157,14 @@
     
             const coords = card.getBoundingClientRect();
 
-            const startingCoords = ` 
-              .starting-coords { 
-                position: absolute;
-                z-index: 10;
-                opacity: 0.5;
-                transform: translate(0, 0);
-                transition:
-                  transform 0.6s cubic-bezier(.3,.8,.3,1),
-                  opacity 0.5s ease;
-              }
-                  
-              .move {
-                transform: translate(0, -300px);
-                opacity: 1;
-              }`;
-            style.innerHTML += startingCoords;
+            const flyingCard = card.cloneNode(true);
+            flyingCard.classList.add('card', 'flying-card');
 
-            const flyingCard = document.createElement('div');
-            flyingCard.classList.add('card', 'starting-coords');
-            //flyingCard.style.position = 'absolute';
-
+            // inserindo o objeto da animação dentro do próprio card garante que a animação ocorra nas exatas mesmas coordenadas do card.
             card.insertAdjacentElement('beforeend', flyingCard);
-            flyingCard.style.visibility = "visible";
+
+            // isto é importante para que o objeto da animação não fique invisível junto ao parente card.
+            flyingCard.style.visibility = "visible"; 
           
             console.log('Summon animation starts!');
 

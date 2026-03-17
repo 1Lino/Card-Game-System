@@ -70,6 +70,29 @@
         outline: 3px dashed red;
       }
 
+      .flying-card { 
+        position: absolute;
+        z-index: 10;
+        opacity: 0.5;
+        transform: translate(0, 0);
+        transition:
+          transform 0.6s cubic-bezier(.3,.8,.3,1),
+          opacity 0.5s ease;
+      }
+          
+      .move {
+        transform: translate(0, -300px);
+        opacity: 1;
+      }
+
+      .slot{
+        width: 80px;
+        height: 120px;
+        border-radius: 6px;
+        margin: 20px;
+        outline: 3px solid white;
+      }
+
     </style>
   </head>
   <body>
@@ -93,8 +116,10 @@
       const field = document.querySelector('.field');
       const board = document.querySelector('.board');
       const button = document.querySelector('.button');
+      const fieldSlots = document.querySelectorAll('[data-component="slot"]');
       let selectedCard = null;
 
+      // EVENTOS:
       document.querySelectorAll('[data-component="card"]').forEach(card => {
         card.onclick = () => {
           selectedCard = selectCard(card);
@@ -110,16 +135,27 @@
         }
       };
 
+      // FUNÇÕES:
       function selectCard(card){
         document.querySelectorAll('.card').forEach(card => card.classList.remove('selected'));
         card.classList.toggle('selected');
         return card.dataset.index;
       }
 
+      function getEmptyFieldSlot(field){
+        for (slot of field){
+          if (slot.dataset.state === 'empty'){
+            return slot;
+          }
+        }
+      }
+
       async function summonCard(cardIndex){
         if (cardIndex === null) throw new Error ('Um card precisa ser selecionado para que a função funcione!');
 
         const card = document.querySelector(`[data-index="${cardIndex}"]`);
+
+        const slot = getEmptyFieldSlot(fieldSlots);
 
         if (card.dataset.state === 'in-hand'){
 
@@ -129,9 +165,11 @@
 
           console.log(`Starting summon animation!`);
 
-          await summonAnimation(card);
+          await summonAnimation(card, slot);
 
-          field.insertAdjacentElement('beforeend', card); // insert, neste contexto, remove o elemento de onde ele está e o adiciona a outro container. Neste caso, card sai de hand para field.
+          slot.insertAdjacentElement('beforeend', card);
+          slot.dataset.state = 'occupied';
+
           card.style.visibility = "visible";
           card.dataset.state = 'in-field';
 
@@ -140,46 +178,32 @@
         }
       };
 
-      async function summonAnimation(card){
+      async function summonAnimation(card, fieldSlot){
         return new Promise(resolve => {
-            const style = document.querySelector('style');
-    
-            const coords = card.getBoundingClientRect();
 
-            const startingCoords = ` 
-              .starting-coords { 
-                position: absolute;
-                z-index: 10;
-                opacity: 0.5;
-                transform: translate(0, 0);
-                transition:
-                  transform 0.6s cubic-bezier(.3,.8,.3,1),
-                  opacity 0.5s ease;
-              }
-                  
-              .move {
-                transform: translate(0, -300px);
-                opacity: 1;
-              }`;
-            style.innerHTML += startingCoords;
+            const flyingCard = card.cloneNode(true);
 
-            const flyingCard = document.createElement('div');
-            flyingCard.classList.add('card', 'starting-coords');
+            flyingCard.classList.add('card', 'flying-card');
+            card.insertAdjacentElement('beforeend', flyingCard); // flyingCard deve ser inserido ao DOM para que getBoundingClientRect funcione.
 
-            // inserindo o objeto da animação dentro do próprio card garante que a animação ocorra nas exatas mesmas coordenadas do card.
-            card.insertAdjacentElement('beforeend', flyingCard);
+            const flyingCardPos = flyingCard.getBoundingClientRect();
+            const fieldSlotPos = fieldSlot.getBoundingClientRect();
+            const deltaX = fieldSlotPos.left - flyingCardPos.left;
+            const deltaY = fieldSlotPos.top - flyingCardPos.top;
 
-            // isto é importante para que o objeto da animação não fique invisível junto ao parente card.
+            // isto é importante para que flyingCard não fique invisível junto ao parente card.
             flyingCard.style.visibility = "visible"; 
           
             console.log('Summon animation starts!');
+            console.log(`Card leaves hand at X: ${flyingCardPos.left}\nCard goes to empty slot at X: ${fieldSlotPos.left}`);
 
             requestAnimationFrame(() => {
-              flyingCard.classList.add('move');
+              flyingCard.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+              flyingCard.style.opacity = 1;
 
               flyingCard.addEventListener('transitionend', () => {
-                console.log('Summon animation ends!');
                 flyingCard.remove();
+                console.log('Summon animation ends!');
                 resolve();
               }, { once: true });
             });
@@ -189,9 +213,12 @@
       
       /*TODO:
         - flyingCard deve ser criada nas coordenadas do card atual, então summonAnimation vai precisar disso. (x)
-        - pra puxar estas coordenadas, vou utilizar o método getBoundingClientRect no card. (x)
-        - daí a animação do card sendo lançado no campo deverá começar a partir destas coordenadas. (x)
-        - é interessante que seja possível que a animação vá até as coordenadas de um slot de campo, caso exista. ()
+        - Pra puxar estas coordenadas, vou utilizar o método getBoundingClientRect no card. (x)
+        - Daí, a animação do card sendo lançado no campo deverá começar a partir destas coordenadas. (x)
+        - É interessante que seja possível que a animação vá até as coordenadas de um slot de campo, caso exista.
+          Isto pode ser facilmente alcançado apenas por alterar a coordenada x do translate da classe move, mas antes
+          é preciso capturar a posição x do slot do campo. (x)
+        - Esta summonAnimation, do jeito que está, pode ser adaptada para se tornar um tipo de controller, de modo que todas as animações do tipo flyCard podem usar ela. ()
       */
     </script>
   </body>
