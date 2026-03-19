@@ -104,14 +104,16 @@
         <div class="slot" data-component="slot" data-index="slot3" data-state="empty"></div>
       </div>
       <div class="hand">
-        <div class="card" data-index="card1" data-component="card" data-state="in-hand">Card1</div>
-        <div class="card" data-index="card2" data-component="card" data-state="in-hand">Card2</div>
-        <div class="card" data-index="card3" data-component="card" data-state="in-hand">Card3</div>
+        <div class="card" data-index="card1" data-component="card" data-state="in-hand" data-owner="player">Card1</div>
+        <div class="card" data-index="card2" data-component="card" data-state="in-hand" data-owner="player">Card2</div>
+        <div class="card" data-index="card3" data-component="card" data-state="in-hand" data-owner="player">Card3</div>
       </div>
       
     </div>
     <button class="button">Usar card</button>
     <script>
+
+      // INTERFACE
       const hand = document.querySelector('.hand');
       const field = document.querySelector('.field');
       const board = document.querySelector('.board');
@@ -119,31 +121,78 @@
       const fieldSlots = document.querySelectorAll('[data-component="slot"]');
       let selectedCard = null;
 
-      // EVENTOS (neste ponto só lidamos com estado, nada de UI, pois eventos são como que uma ponte entre a interação com a interface gráfica e o estado):
+      // GAME_STATE
+      const GAME_STATE = {
+        player: {
+          deck: [],
+          hand: ['card1', 'card2', 'card3'],
+          field: []
+        },
+        selectedCard: null,
+      }
+
+      // GAME_ENGINE
+      class GameEngine
+      {
+        constructor(state){
+          this.state = state;
+        }
+        
+        drawCard(){
+          const card = this.state.player.deck[this.state.player.deck.length - 1];
+          this.state.player.hand.push(card);
+          this.state.player.deck.pop();
+          return card;
+        }
+
+        selectCard(cardDetails){
+          this.state.selectedCard = cardDetails.index;
+          return cardDetails.index;
+        }
+
+        checkSelection(){
+          return this.state.selectedCard;
+        }
+
+      }
+
+      const gameEngine = new GameEngine(GAME_STATE);
+
+      // EVENTOS (devem converter os metadados dos elementos em dados puros para que sejam então passados para a engine. Os
+      // metadados dos elementos não devem ser passados diretamente para a engine, mas somente por meio da conversão):
       document.querySelectorAll('[data-component="card"]').forEach(card => {
         card.onclick = () => {
-          selectedCard = selectCard(card);
-          console.log('Selected card: ', selectedCard);
+          const cardDetails = {
+            index: card.dataset.index,
+          }
+          gameEngine.selectCard(cardDetails);
+          UIToggleSelected(card);
+          console.log('Selected card: ', gameEngine.checkSelection());
         };
       });
 
-      // Neste ponto, a interação com a interface, ou seja, o clique no botão de usar card, chama a função que atualiza a interface, no entanto o que deve ocorrer aqui é uma atualização de estado. A atualização de interface deve ser idealmente algo separado dos eventos. 
       button.onclick = () => {
         try {
-          summonCard(selectedCard);
+          summonCard(gameEngine.checkSelection());
         } catch (err) {
           console.err(err.message);
         }
       };
 
+
       // FUNÇÕES:
-      function selectCard(card){
-        document.querySelectorAll('.card').forEach(card => card.classList.remove('selected'));
-        card.classList.toggle('selected');
-        return card.dataset.index;
+      // TODO: deve ser criada uma classe só para as funções de interface de usuário. As variáveis de elementos devem vir para cá também:
+      class gameInterface
+      {
+        //TODO...
       }
 
-      function getEmptyFieldSlot(field){
+      function UIToggleSelected(card){
+        document.querySelectorAll('.card').forEach(card => card.classList.remove('selected'));
+        card.classList.toggle('selected');
+      }
+
+      function UIgetEmptyFieldSlot(field){
         for (slot of field){
           if (slot.dataset.state === 'empty'){
             return slot;
@@ -152,11 +201,12 @@
       }
 
       async function summonCard(cardIndex){
+        // WARN: essa validação deve ser feita pela engine, não por uma função de UI.
         if (cardIndex === null) throw new Error ('Um card precisa ser selecionado para que a função funcione!');
 
         const card = document.querySelector(`[data-index="${cardIndex}"]`);
 
-        const slot = getEmptyFieldSlot(fieldSlots);
+        const slot = UIgetEmptyFieldSlot(fieldSlots);
 
         if (card.dataset.state === 'in-hand'){
 
@@ -221,7 +271,7 @@
           Isto pode ser facilmente alcançado apenas por alterar a coordenada x do translate da classe move, mas antes
           é preciso capturar a posição x do slot do campo. (x)
         - Esta summonAnimation, do jeito que está, pode ser adaptada para se tornar um tipo de controller, de modo que todas as animações do tipo flyCard podem usar ela. No caso, basta mudar o nome da função e torná-la exportável, pois não há muito o que se adaptar por hora. (x)
-        - Já que este código está bem organizado e simples, seria interessante usá-lo como protótipo para criar um sistema de Estado - Engine - Evento - UI. Então aplicar uma separação total de responsabilidades.
+        - Já que este código está bem organizado e simples, seria interessante usá-lo como protótipo para criar um sistema de Estado - Engine - Evento - UI. Então aplicar uma separação total de responsabilidades. ()
       */
     </script>
   </body>
