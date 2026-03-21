@@ -130,23 +130,69 @@
       {
         constructor(state){
           this.state = state;
+          console.log(this.state.player);
+        }
+
+        /**
+         * @param {string} action
+         * @param {object} cardDetails
+         */
+        dispatchAction(action, cardDetails){
+          switch (action){
+              case "SELECT":
+                this.#selectCard(cardDetails);
+                break;
+              case "DRAW":
+                this.#drawCard();
+                break;
+              case "SUMMON":
+                this.#summonCard();
+                break;
+              case "ATTACK":
+                this.#attackCard();
+                break;
+              default:
+                throw new Error (`Error: invalid "${action}"!\nValid argument: SELECT, DRAW, SUMMON, ATTACK.`);
+            }
         }
         
-        drawCard(){
+        #drawCard(){
           const card = this.state.player.deck[this.state.player.deck.length - 1];
           this.state.player.hand.push(card);
           this.state.player.deck.pop();
           return card;
         }
 
-        selectCard(cardDetails){
+        #summonCard(){
+          if (this.state.selectedCardState !== "in-hand") 
+            throw new Error (`Error: card data-state "${this.state.selectedCardState}"\nrequired dada-state "in-hand"`);
+
+          this.state.player.field.push(this.state.selectedCardIndex);
+          this.state.player.hand = this.state.player.hand.filter(cardIndex => cardIndex !== this.state.selectedCardIndex);
+          
+          console.log(`Summoned ${this.state.selectedCardIndex} to field!`); 
+          console.log(this.state.player);
+        }
+
+        #attackCard(){
+          //TODO...
+        }
+
+        #selectCard(cardDetails){
           this.state.selectedCardIndex = cardDetails.index;
           this.state.selectedCardState = cardDetails.state;
           this.state.selectedCardOwner = cardDetails.owner;
         }
 
         getSelectedCardId(){
-          return this.state.selectedCardIndex;
+          try {
+            if (this.state.selectedCardIndex === null || this.state.selectedCardIndex === undefined)
+              throw new Error('Erro: nenhum card selecionado!');
+            return this.state.selectedCardIndex;  
+          } catch (err) {
+            console.error(err.message);
+            return false;
+          }
         }
 
       }
@@ -158,15 +204,15 @@
         #hand; 
         #field;
         #board;
-        //#button;
-        //#fieldSlots; // tenho que ver como que retorna o valor de um atributo privado. Testarei clonar isso pra ver.
+        //#button; // botão tem a ver com evento, portanto irá para a classe GameEvent.
+        #fieldSlots; 
 
         constructor(){
           this.#hand = document.querySelector('.hand');
           this.#field = document.querySelector('.field');
           this.#board = document.querySelector('.board');
           this.button = document.querySelector('.button');
-          this.fieldSlots = document.querySelectorAll('[data-component="slot"]');
+          this.#fieldSlots = document.querySelectorAll('[data-component="slot"]');
         }
 
         targetSlot(target){
@@ -177,7 +223,7 @@
               return null;
 
             case "field":
-              return this.fieldSlots;
+              return this.#fieldSlots;
 
             case "grave":
               // TODO...
@@ -213,34 +259,28 @@
          * @param {Node|NodeList} targetSlot
          */
         async renderCardTo(cardIndex, targetSlot){
-          // WARN: essa validação deve ser feita pela engine, não por uma função de UI.
-          // também o try... catch deve ser feito pela GameInterface, não pelo evento.
-          if (cardIndex === null) throw new Error ('Um card precisa ser selecionado para que a função funcione!');
+          if (!cardIndex) return;
 
           const card = document.querySelector(`[data-index="${cardIndex}"]`);
 
           const slot = this.getEmptySlot(targetSlot);
 
-          // WARN: se o card está "in-hand" logo a renderização pode ocorrer. Essa validação também pode ser feita pela engine, de modo que essa função só se preocupe exclusivamente com a renderização
-          if (card.dataset.state === 'in-hand'){
+          console.group(`Rendering of ${card.dataset.index}`);
 
-            console.group(`Summon of ${card.dataset.index}`);
+          card.style.visibility = "hidden";
 
-            card.style.visibility = "hidden";
+          console.log(`Starting summon animation!`);
 
-            console.log(`Starting summon animation!`);
+          await this.flyCardAnimation(card, slot);
 
-            await this.flyCardAnimation(card, slot);
+          slot.insertAdjacentElement('beforeend', card);
+          slot.dataset.state = 'occupied';
 
-            slot.insertAdjacentElement('beforeend', card);
-            slot.dataset.state = 'occupied';
+          card.style.visibility = "visible";
+          card.dataset.state = 'in-field';
 
-            card.style.visibility = "visible";
-            card.dataset.state = 'in-field';
-
-            console.log(`${card.dataset.index} added to field!`);
-            console.groupEnd();
-          }
+          console.log(`${card.dataset.index} rendered to field!`);
+          console.groupEnd();
         };
 
         async flyCardAnimation(card, selectedSlot){
@@ -257,13 +297,12 @@
               const deltaX = selectedSlotPos.left - flyingCardPos.left;
               const deltaY = selectedSlotPos.top - flyingCardPos.top;
 
-              // isto é importante para que flyingCard não fique invisível junto ao parente card.
+              // isto é importante para que flyingCard não fique invisível junto ao parente "card".
               flyingCard.style.visibility = "visible"; 
             
               console.log('Summon animation starts!');
               console.log(`Card leaves hand at X: ${flyingCardPos.left}\nCard goes to empty slot at X: ${selectedSlotPos.left}`);
 
-              // TIP: pesquisar sobre como esta "resquestAnimationFrame" funciona, e como seria isto em outras linguagens como python ou C#, para fins de referência.
               requestAnimationFrame(() => {
                 flyingCard.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
                 flyingCard.style.opacity = 1;
@@ -279,8 +318,20 @@
         }
       }
 
+      class GameEvent
+      {
+        constructor(){
+          // TODO...
+        }
+
+        eventBus(){
+          // TODO...
+        }
+      }
+
       const gameEngine = new GameEngine(GAME_STATE);
-      const gameInterface = new GameInterface();
+      const gameInterface = new GameInterface(); // avaliar uso de classe diretamente.
+      const gameEvent = new GameEvent(); // avaliar uso de classe diretamente ao invés de instância.
 
       // EVENTOS (devem converter os metadados dos elementos em dados puros para que sejam então passados para a engine. Os
       // metadados dos elementos não devem ser passados diretamente para a engine, mas somente por meio dessa conversão):
@@ -291,7 +342,7 @@
             state: card.dataset.state,
             owner: card.dataset.owner
           }
-          gameEngine.selectCard(cardDetails);
+          gameEngine.dispatchAction('SELECT', cardDetails);
           gameInterface.toggleSelectionEffect(card);
           console.log('Selected card: ', gameEngine.getSelectedCardId());
         };
@@ -299,24 +350,17 @@
 
       // TODO: aqui os eventos são geridos pela gameInterface, mas isto não é o ideal. Deve ser criada uma classe chamada
       // GameEvent, que gere todos os eventos de maneira universal (usando event handlers e delegação).
-      // um método chamado eventBus deve ser criado nesta classe para poder receber o tipo de evento e o objeto do evento.
+      // um método chamado eventBus deve ser criado nesta classe para poder receber o tipo de evento e o objeto do evento. 
       gameInterface.button.onclick = () => {
         try {
+          gameEngine.dispatchAction('SUMMON');
           gameInterface.renderCardTo(gameEngine.getSelectedCardId(), gameInterface.targetSlot("field"));
         } catch (err) {
-          console.err(err.message);
+          console.error(err.message);
         }
       };
 
-
       /*TODO:
-        - flyingCard deve ser criada nas coordenadas do card atual, então summonAnimation vai precisar disso. (x)
-        - Pra puxar estas coordenadas, vou utilizar o método getBoundingClientRect no card. (x)
-        - Daí, a animação do card sendo lançado no campo deverá começar a partir destas coordenadas. (x)
-        - É interessante que seja possível que a animação vá até as coordenadas de um slot de campo, caso exista.
-          Isto pode ser facilmente alcançado apenas por alterar a coordenada x do translate da classe move, mas antes
-          é preciso capturar a posição x do slot do campo. (x)
-        - Esta summonAnimation, do jeito que está, pode ser adaptada para se tornar um tipo de controller, de modo que todas as animações do tipo flyCard podem usar ela. No caso, basta mudar o nome da função e torná-la exportável, pois não há muito o que se adaptar por hora. (x)
         - Já que este código está bem organizado e simples, seria interessante usá-lo como protótipo para criar um sistema de Estado - Engine - Evento - UI. Então aplicar uma separação total de responsabilidades. ()
       */
 
