@@ -145,7 +145,7 @@
           this.state.selectedCardOwner = cardDetails.owner;
         }
 
-        checkCardSelection(){
+        getSelectedCardId(){
           return this.state.selectedCardIndex;
         }
 
@@ -154,37 +154,72 @@
       // INTERFACE
       class GameInterface
       {
+        // atributos declarados com # ficam privados.
+        #hand; 
+        #field;
+        #board;
+        //#button;
+        //#fieldSlots; // tenho que ver como que retorna o valor de um atributo privado. Testarei clonar isso pra ver.
+
         constructor(){
-          this.hand = document.querySelector('.hand');
-          this.field = document.querySelector('.field');
-          this.board = document.querySelector('.board');
+          this.#hand = document.querySelector('.hand');
+          this.#field = document.querySelector('.field');
+          this.#board = document.querySelector('.board');
           this.button = document.querySelector('.button');
           this.fieldSlots = document.querySelectorAll('[data-component="slot"]');
         }
 
-        UIToggleSelectionEffect(card){
+        targetSlot(target){
+          switch (target){
+
+            case "hand":
+              // TODO...
+              return null;
+
+            case "field":
+              return this.fieldSlots;
+
+            case "grave":
+              // TODO...
+              return null;
+
+            default:
+              break;
+          }
+        }
+
+        toggleSelectionEffect(card){
           document.querySelectorAll('.card').forEach(card => card.classList.remove('selected'));
           card.classList.toggle('selected');
         }
 
-        // TIP: pode ser transformada em apenas UIgetEmptySlot, pois essa função pode capturar basicamente qualquer slot do campo, não somente do setor "field". Isto faz a função ser reutilizável para outros setores.
-        UIgetEmptyFieldSlot(field){
-          for (this.slot of field){
-            if (this.slot.dataset.state === 'empty'){
-              return this.slot;
+        /**
+         * @param {Node|NodeList} slotOrSlots
+         * @returns {Node|null}
+         */
+        getEmptySlot(slotOrSlots){
+          const slots = (slotOrSlots instanceof NodeList) ? slotOrSlots : [slotOrSlots];
+  
+          for (const slot of slots){
+            if (slot.dataset.state === 'empty'){
+              return slot;
             }
           }
+          return null;
         }
 
-        // TIP: pode ser transformada em apenas renderCardTo, pois essa função pode renderizar em basicamente qualquer slot do campo, não somente nos do setor "field". Isto faz a função ser reutilizável para outros setores, evitando assim duplicação futura de código e deixando o sistema mais enxuto.
-        async renderCardToField(cardIndex){
+        /**
+         * @param {String} cardIndex
+         * @param {Node|NodeList} targetSlot
+         */
+        async renderCardTo(cardIndex, targetSlot){
           // WARN: essa validação deve ser feita pela engine, não por uma função de UI.
           // também o try... catch deve ser feito pela GameInterface, não pelo evento.
           if (cardIndex === null) throw new Error ('Um card precisa ser selecionado para que a função funcione!');
 
           const card = document.querySelector(`[data-index="${cardIndex}"]`);
 
-          const slot = this.UIgetEmptyFieldSlot(this.fieldSlots);
+          const slot = this.getEmptySlot(targetSlot);
 
           // WARN: se o card está "in-hand" logo a renderização pode ocorrer. Essa validação também pode ser feita pela engine, de modo que essa função só se preocupe exclusivamente com a renderização
           if (card.dataset.state === 'in-hand'){
@@ -214,7 +249,8 @@
               const flyingCard = card.cloneNode(true);
 
               flyingCard.classList.add('card', 'flying-card');
-              card.insertAdjacentElement('beforeend', flyingCard); // flyingCard deve ser inserido ao DOM para que getBoundingClientRect funcione.
+              // flyingCard deve ser inserido ao DOM para que getBoundingClientRect funcione.
+              card.insertAdjacentElement('beforeend', flyingCard); 
 
               const flyingCardPos = flyingCard.getBoundingClientRect();
               const selectedSlotPos = selectedSlot.getBoundingClientRect();
@@ -227,7 +263,7 @@
               console.log('Summon animation starts!');
               console.log(`Card leaves hand at X: ${flyingCardPos.left}\nCard goes to empty slot at X: ${selectedSlotPos.left}`);
 
-              // TIP: pesquisar sobre como esta "resquesAnimationFrame" funciona, e como seria isto em outras linguagens como python ou C#, para fins de referência.
+              // TIP: pesquisar sobre como esta "resquestAnimationFrame" funciona, e como seria isto em outras linguagens como python ou C#, para fins de referência.
               requestAnimationFrame(() => {
                 flyingCard.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
                 flyingCard.style.opacity = 1;
@@ -256,14 +292,17 @@
             owner: card.dataset.owner
           }
           gameEngine.selectCard(cardDetails);
-          gameInterface.UIToggleSelectionEffect(card);
-          console.log('Selected card: ', gameEngine.checkCardSelection());
+          gameInterface.toggleSelectionEffect(card);
+          console.log('Selected card: ', gameEngine.getSelectedCardId());
         };
       });
 
+      // TODO: aqui os eventos são geridos pela gameInterface, mas isto não é o ideal. Deve ser criada uma classe chamada
+      // GameEvent, que gere todos os eventos de maneira universal (usando event handlers e delegação).
+      // um método chamado eventBus deve ser criado nesta classe para poder receber o tipo de evento e o objeto do evento.
       gameInterface.button.onclick = () => {
         try {
-          gameInterface.renderCardToField(gameEngine.checkCardSelection());
+          gameInterface.renderCardTo(gameEngine.getSelectedCardId(), gameInterface.targetSlot("field"));
         } catch (err) {
           console.err(err.message);
         }
