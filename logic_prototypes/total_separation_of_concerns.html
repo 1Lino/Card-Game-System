@@ -104,9 +104,9 @@
         <div class="slot" data-component="slot" data-index="slot3" data-state="empty"></div>
       </div>
       <div class="hand">
-        <div class="card" data-index="card1" data-component="card" data-state="in-hand" data-owner="player">Card1</div>
-        <div class="card" data-index="card2" data-component="card" data-state="in-hand" data-owner="player">Card2</div>
-        <div class="card" data-index="card3" data-component="card" data-state="in-hand" data-owner="player">Card3</div>
+        <div class="card" data-component="card" data-index="card1"  data-state="in-hand" data-owner="player">Card1</div>
+        <div class="card" data-component="card" data-index="card2"  data-state="in-hand" data-owner="player">Card2</div>
+        <div class="card" data-component="card" data-index="card3"  data-state="in-hand" data-owner="player">Card3</div>
       </div>
       
     </div>
@@ -324,17 +324,51 @@
           // TODO...
         }
 
-        eventBus(){
-          // TODO...
+        static eventListener(){
+          ["click", "mouseout", "mouseover"].forEach(event => {
+            document.body.addEventListener(event, gameComponent => {
+              this.eventBus(event, gameComponent.srcElement.dataset.component);
+            });
+          });
+          
         }
+
+        static eventBus(event, component){
+
+          const events = {
+            click: () => this.onClick(event, component),
+            mouseover: () => this.onMouseOver(event, component),
+            mouseout: () => this.onMouseOut(event, component)
+          };
+
+          if (['slot', 'card'].includes(component)){
+            events[event]();
+          }
+
+          if (!(event in events)) 
+            throw new Error (`Error: "${event}" is not a valid event!!\nValid events: ${Object.keys(events)}`);
+          
+        }
+
+        static onClick(event, component){
+          console.log(`"${event}" recognized by the event listener! Target component: "${component}".`);
+        }
+
+        static onMouseOver(event, component){
+          console.log(`"${event}" recognized by the event listener! Target component: "${component}".`);
+        }
+
+        static onMouseOut(event, component){
+          console.log(`"${event}" recognized by the event listener! Target component: "${component}".`);
+        }
+
       }
+
 
       const gameEngine = new GameEngine(GAME_STATE);
       const gameInterface = new GameInterface(); // avaliar uso de classe diretamente.
-      const gameEvent = new GameEvent(); // avaliar uso de classe diretamente ao invés de instância.
 
-      // EVENTOS (devem converter os metadados dos elementos em dados puros para que sejam então passados para a engine. Os
-      // metadados dos elementos não devem ser passados diretamente para a engine, mas somente por meio dessa conversão):
+      // EVENTOS
       document.querySelectorAll('[data-component="card"]').forEach(card => {
         card.onclick = () => {
           const cardDetails = {
@@ -347,6 +381,8 @@
           console.log('Selected card: ', gameEngine.getSelectedCardId());
         };
       });
+
+      GameEvent.eventListener();
 
       // TODO: aqui os eventos são geridos pela gameInterface, mas isto não é o ideal. Deve ser criada uma classe chamada
       // GameEvent, que gere todos os eventos de maneira universal (usando event handlers e delegação).
