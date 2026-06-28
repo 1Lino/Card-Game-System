@@ -71,9 +71,6 @@ function renderCardsToHand(state_obj){
     console.groupEnd();
 }
 
-// TODO: prompt box só deverá seguir lógica de toggle, ou seja, se já houver um prompt box ativado,
-// este prompt ativo deve ser eliminado e então recriado nas coordenadas indicadas. Um simples condicional faz essa 
-// verificação.
 function showCardDetailOn(card, hand){
     const coordsAndDimensions = getCoordsAndDimensionsFrom(card);
     hand.appendChild(renderCardDetailPromptAt(coordsAndDimensions));
@@ -115,8 +112,6 @@ function renderCardDetailPromptAt(coordsAndDimensions){
     return detailPromptBox;
 }
 
-// por hora esta função só funciona no escopo de cards da mão, mas os demais slots de campo também deverão receber ela
-// em seu onClick.
 export function removePreviousDetailPrompts(){
     document.querySelectorAll('[data-component="promptBox"]').forEach(prompt => {
         prompt.remove();

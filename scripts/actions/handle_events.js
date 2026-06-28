@@ -1,4 +1,5 @@
 import { getGameState } from "../engine/game_state.js";
+import { removePreviousDetailPrompts } from "../UI/render_hand.js";
 
 
 export function handleMouseEvent(node, event, state_obj){
@@ -42,7 +43,7 @@ function onMouseClick(node, state_obj) {
     // teste
     document.querySelectorAll('[data-hoverable][data-component="card"]').forEach(el => {
         el.innerHTML = '';
-    })
+    });
 
     if (node.dataset.owner === 'player' &&
         node.dataset.component === 'card' && 
@@ -54,4 +55,11 @@ function onMouseClick(node, state_obj) {
         console.log(`Is selected: ${state_obj.event.click}.`);
         // testes
     } 
+
+    // se o jogador clicar em qualquer coisa que não seja seu ou que não esteja em sua mão, remove os prompts de detalhe de card que
+    // porventura estejam ativos.
+    if (node.dataset.owner !== 'player' ||
+        node.dataset.state !== 'in-hand'){
+            removePreviousDetailPrompts();
+        }
 }

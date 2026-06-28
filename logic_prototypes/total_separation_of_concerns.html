@@ -404,9 +404,7 @@
       
       // EVENTOS
 
-      // TODO: aqui os eventos são geridos pela gameInterface, mas isto não é o ideal. Deve ser criada uma classe chamada
-      // GameEvent, que gere todos os eventos de maneira universal (usando event handlers e delegação).
-      // um método chamado eventBus deve ser criado nesta classe para poder receber o tipo de evento e o objeto do evento. 
+      // TODO: Isso é apenas um botão de protótipo, possuindo então posição estática na interface, mas no jogo real o botão de summon deve ser renderizado acima do card quando este for selecionado, junto com outras opções, e só a partir daí executar a ação de summon de acordo com a validação da engine.
       gameInterface.button.onclick = () => {
         try {
           gameEngine.dispatchAction('SUMMON');
@@ -425,9 +423,9 @@
 
       - Eventos/Listeners: leem data-* e convertem em dados semânticos (objetos JS simples).
 
-      - Engine: recebe apenas esses objetos, interpreta e valida regras, ignorando a origem.
+      - Engine: recebe apenas esses objetos, interpreta e valida regras, ignorando a origem dos dados.
 
-      - Renderização: atualiza a UI com base na resposta da engine.
+      - Renderização: atualiza a UI com base na resposta da engine ao event listener.
       */
     </script>
   </body>
