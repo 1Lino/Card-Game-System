@@ -27,7 +27,8 @@ const GAME_STATE = {
             drawsRemaining: 3,
             normalSummonsRemaining: 1,
             attacksRemaining: 1,
-        }
+        },
+        summonedCardId: null,
     },
 
     enemy: {
@@ -40,7 +41,8 @@ const GAME_STATE = {
             drawsRemaining: 3,
             normalSummonsRemaining: 1,
             attacksRemaining: 1,
-        }
+        },
+        summonedCardId: null,
     },
 
     selection: {

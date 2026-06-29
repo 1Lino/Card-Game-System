@@ -14,6 +14,7 @@ export function useCard(state_obj, card_id){
     state[state.turn.player].field.push(card_id);
     state[state.turn.player].hand.splice(index, 1);
     state[state.turn.player].actions.normalSummonsRemaining -= 1;
+    state[state.turn.player].summonedCardId = card_id;
   
     return {...state};
 }

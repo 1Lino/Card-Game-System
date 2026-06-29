@@ -12,13 +12,21 @@ function summonAnimation(state_obj){
         // |-- START
         const isPlayer = state_obj.turn.player === 'player';
 
-        const flyingCard = card.cloneNode(true); // TODO: este "card" deve ser na verdade uma referência ao card que a função useCard invocou para o estado de campo/field. Basicamente, se useCard botou para campo o card "id6", este id deve ser usado para pegar o elemento que será usado nessa animação, no caso, o card da mão que corresponder a este id de estado.
+        // const flyingCard = card.cloneNode(true); // TODO: este "card" deve ser na verdade uma referência ao card que a função useCard invocou para o estado de campo/field. Basicamente, se useCard botou para campo o card "id6", este id deve ser usado para pegar o elemento que será usado nessa animação, no caso, o card da mão que corresponder a este id de estado.
 
-        flyingCard.classList.add('card', 'flying-card');
+        // puxa o id do card usado neste turno, e então seleciona o componente/card na UI que possui este id.
+        const summonedCardIndex = state_obj[state_obj.turn.player].summonedCardId;
+        const flyingCard = document.querySelector(`[data-index="${summonedCardIndex}"]`);
+
+
+        flyingCard.classList.add('flying-card');
         card.insertAdjacentElement('beforeend', flyingCard); // flyingCard deve ser inserido ao DOM para que getBoundingClientRect funcione.
 
+        // TODO: selectedSlot deve puxar o id de um slot vago de campo. Ainda não tratei de como se suscederá isso. Devo verificar a arquitetura disso pra ver a melhor forma de se acessar dados de slot de campo.
+        const selectedSlot = null; 
+
         const flyingCardPos = flyingCard.getBoundingClientRect();
-        const selectedSlotPos = selectedSlot.getBoundingClientRect();
+        const selectedSlotPos = selectedSlot.getBoundingClientRect(); 
         const deltaX = selectedSlotPos.left - flyingCardPos.left;
         const deltaY = selectedSlotPos.top - flyingCardPos.top;
 
