@@ -29,6 +29,6 @@ document.body.addEventListener('click', node => {
 state = await drawPhase(state); // isso aqui é só pra teste, pra ver se a função drawPhase tá funcionando, depois isso vai ser controlado por eventos globais, como clique em deck, fim de fase, etc.
 
 // useCard OK.
-state = useCard(state, "id4"); 
+state = useCard(state, "id4"); // está funcionando normalmente, falta fazer a UI reagir a isto, seguindo o exemplo de draw_card com render_hand.
 
 console.log('state after used card', state);

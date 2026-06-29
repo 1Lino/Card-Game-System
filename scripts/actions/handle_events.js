@@ -28,7 +28,8 @@ export function toggleMouseEventState(state_obj, event){
 }
 
 function hoverAnimation(node, state_obj){
-    console.log(`Hover on ${node.dataset.owner}'s ${node.dataset.component}: ${state_obj.event.hover}`);
+    // NOTE: este console.log não deve ser deletado enquanto testes ainda forem feitos.
+    // console.log(`Hover on ${node.dataset.owner}'s ${node.dataset.component}: ${state_obj.event.hover}`);
 
     if (state_obj.event.hover)
         node.classList.add('onHover');
@@ -49,8 +50,11 @@ function onMouseClick(node, state_obj) {
         node.dataset.component === 'card' && 
         node.dataset.state === 'in-hand' 
         ){
+
         // testes
-        node.innerHTML = `Card: ${node.dataset.index}`;
+        node.innerHTML = `Card: ${node.dataset.index}`; // 
+
+        console.log("-----------------------");
         console.log(`Clicked on card with id of ${node.dataset.index}.`);
         console.log(`Is selected: ${state_obj.event.click}.`);
         // testes

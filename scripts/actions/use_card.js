@@ -21,9 +21,9 @@ export function useCard(state_obj, card_id){
 
 // NOTAS.:
 // por padrão, após a draw fase, o status de action do jogador (player ou inimigo) deve estar assim:
-attacksRemaining: 1
-drawsRemaining: 0
-normalSummonsRemaining: 1
+// attacksRemaining: 1
+// drawsRemaining: 0
+// normalSummonsRemaining: 1
 
 // e o turno deve ser 'main'. Dito isto, se for verificado que a fase atual é 'main' e que normalSummonsRemaining é maior do que 0, o player poderá usar um card de sua mão. Assim, ocorrerá o seguinte:
 // -ao selecionar um card com um clique de mouse, deverá aparecer um prompt de summon logo acima do card.

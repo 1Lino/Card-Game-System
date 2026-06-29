@@ -127,7 +127,7 @@
         };
       });
 
-      // Neste ponto, a interação com a interface, ou seja, o clique no botão de usar card, chama a função que atualiza a interface, no entanto o que deve ocorrer aqui é uma atualização de estado. A atualização de interface deve ser idealmente algo separado dos eventos. 
+      // Neste ponto, o clique no botão de usar card chama a função que atualiza a interface. No entanto, a atualização de interface deve ser idealmente separada dos eventos. 
       button.onclick = () => {
         try {
           summonCard(selectedCard);

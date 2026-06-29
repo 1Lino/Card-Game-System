@@ -12,6 +12,7 @@ function drawAnimation(state_obj){
 
         const isPlayer = state_obj.turn.player === 'player';
 
+        // '2', aqui, se refere às classes do adversário. Não é uma forma muito interessante de fazer essa referência, mas é simples o suficiente. Basicamente, se o jogador for o player, as classes são as do player, do contrário, são as do adversário, que terminam em 2.
         const flyingElement = `
             <div class="card deck-stack${isPlayer ? '' : 2} flying${isPlayer ? '' : 2} hidden">
                 <div class="card-back"></div>
