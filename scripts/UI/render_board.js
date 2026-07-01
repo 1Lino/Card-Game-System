@@ -19,7 +19,8 @@ const TOKEN = {
     dataOccupied: {
         true: true,
         false: false
-    }
+    },
+    dataContent: "" // refere-se ao id do conteúdo contido num slot de campo. Por padrão, é uma string vazia.
 };
 
 // Object.freeze é usado para garantir que o objeto TOKEN e suas propriedades não sejam modificados acidentalmente em outras partes do código, o que ajuda a manter a consistência e evitar bugs relacionados a alterações inesperadas. 
@@ -80,15 +81,15 @@ export function GameBoard() {
                     </div>
 
                     <div class="grid field1">
-                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.player}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}">Field1</div>
-                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.player}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}">Field1</div>
-                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.player}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}">Field1</div>
+                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.player}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}" data-content="${TOKEN.dataContent}">Field1</div>
+                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.player}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}" data-content="${TOKEN.dataContent}">Field1</div>
+                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.player}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}" data-content="${TOKEN.dataContent}">Field1</div>
                     </div>
 
                     <div class="grid field2">
-                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.enemy}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}">Field2</div>
-                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.enemy}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}">Field2</div>
-                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.enemy}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}">Field2</div>
+                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.enemy}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}" data-content="${TOKEN.dataContent}">Field2</div>
+                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.enemy}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}" data-content="${TOKEN.dataContent}">Field2</div>
+                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.enemy}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}" data-content="${TOKEN.dataContent}">Field2</div>
                     </div>
 
                     <div class="grid phases">

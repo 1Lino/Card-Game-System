@@ -43,7 +43,7 @@ function onMouseClick(node, state_obj) {
 
     // teste
     document.querySelectorAll('[data-hoverable][data-component="card"]').forEach(el => {
-        el.innerHTML = '';
+        el.innerHTML = 'Card';
     });
 
     if (node.dataset.owner === 'player' &&

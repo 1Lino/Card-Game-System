@@ -28,6 +28,7 @@ function summonAnimation(state_obj){
 
         // seleciona um slot vago do campo do jogador atual:
         const selectedSlot = document.querySelector(`[data-component="field"][data-owner="${currentPlayer}"][data-occupied="false"]`);
+        selectedSlot.dataset.content = summonedCardIndex;
 
         console.log(`Card with the id of "${summonedCardIndex}" will be summoned at ${currentPlayer}'s field on the following slot:`)
         console.log(selectedSlot);
@@ -36,6 +37,8 @@ function summonAnimation(state_obj){
         const selectedSlotPos = selectedSlot.getBoundingClientRect(); 
         const deltaX = selectedSlotPos.left - flyingCardPos.left;
         const deltaY = selectedSlotPos.top - flyingCardPos.top;
+
+        card.style.visibility = "hidden"; // esconde o card da mão enquanto a animação ocorre.
 
         // isto é importante para que flyingCard não fique invisível junto ao parente card.
         flyingCard.style.visibility = "visible"; 
@@ -59,10 +62,27 @@ function summonAnimation(state_obj){
 
 
 function renderCardsToField(state_obj){
-    console.group(`Received state to render cards to ${state_obj.turn.player}'s field: `);
-    console.log(state_obj[state_obj.turn.player]); 
 
-    //TODO... Depois da animação de summon, é necessário remover o card da mão e renderizar ele no slot selecionado.
+    const currentPlayer = state_obj.turn.player;
+
+    console.group(`Received state to render cards to ${currentPlayer}'s field: `);
+    console.log(state_obj[currentPlayer]); 
+
+    const summonedCardIndex = state_obj[currentPlayer].summonedCardId;
+    const card = document.querySelector(`[data-index="${summonedCardIndex}"]`);
+    
+    const selectedSlot = document.querySelector(`[data-component="field"][data-owner="${currentPlayer}"][data-content="${summonedCardIndex}"]`);
+    selectedSlot.replaceChildren(); // apaga todos os elementos filhos (deixa o slot vazio).
+
+    selectedSlot.insertAdjacentElement('beforeend', card); // move o card da mão para o slot. TODO: há que se configurar perspectiva.
+    card.style.visibility = "visible";  // faz o card ficar visível, já que estava invisível durante a animação.
+    card.dataset.state = 'in-field'; // determina que o card agora está "em campo";
+    selectedSlot.dataset.occupied = true; // uma vez terminada a animação, determina que o slot está agora ocupado.
+
+    console.log(selectedSlot);
+    console.groupEnd();
+
+    //TODO... Depois da animação de summon, é necessário remover o card da mão do jogador e renderizar ele no slot selecionado.
 }
 
 // TODO: após as funções acima forem implementadas e testadas, considerar implementar também as de prompt, só que com configurações diferentes. No caso, o prompt dos cards no campo, na fase main, deve ser o mesmo prompt dos cards da mão, com a exceção de que que terá somente "details". Já na fase de combate, o prompt deve ser de combate, etc. Um simples if...else ou switch faz essa verificação de estado.

@@ -58,6 +58,7 @@ function renderCardsToHand(state_obj){
     for (let amount = 0; amount < state_obj[state_obj.turn.player].actions.drawsRemaining; amount++){
         const card = document.createElement("div");
         card.className = "card";
+        card.textContent = "Card";
         card.dataset.hoverable = "true";
         card.dataset.component = "card";
         card.dataset.owner = state_obj.turn.player;

@@ -26,9 +26,10 @@
 (x) 10. transformar o tabuleiro de cards em um componente, inspirado em React.
 (x) 11. todas as propriedades dos componentes devem vir de algum objeto que as defina, pra evitar editar diretamente os  elementos. Isto é, utilizar o conceito de "Design Token".
 (x) 12. transformar todas as cópias profundas do game_state numa função, de modo a evitar repetições de estruturas e evitar possíveis erros de sintaxe. Usar a função getGameState pra isso, pois ela basicamente já cria uma cópia profunda do game_state.
-() 13. criar animações de summon e funções de renderização do card no campo. Como use_card já está funcionando, posso usar o estado retornado por ela para fazer os testes de renderização.
-() 14. começar a trabalhar no reducer enquanto o projeto está pequeno.
+(x) 13. criar animações de summon e funções de renderização do card no campo. Como use_card já está funcionando, posso usar o estado retornado por ela para fazer os testes de renderização.
+(x) 14. começar a trabalhar no reducer enquanto o projeto está pequeno.
 () 15. A propriedade "hoverable" só deve ser aplicada aos campos (slots) caso estejam vazios. Se houver card em cima, somente o card deve possuir tal propriedade.
-() 16. render_hand e render_field são arquivos separados, mas devem ser reduzidos a um só futuramente: render_cards (conterá todas as funções e rotinas relacionadas a renderização de cards e outros elementos relacionados aos cards).
+() 16. render_hand e render_field são arquivos separados, mas podem ser reduzidos a um só futuramente: render_cards (conterá todas as funções e rotinas relacionadas a renderização de cards e outros elementos relacionados aos cards).
+() 17. É necessário que o usuário não possa interagir com o tabuleiro enquanto as rotinas não forem carregadas. É possível usar assincronia para fazer isso (basicamente, deve-se evitar o famoso "race-condition").
 
 
