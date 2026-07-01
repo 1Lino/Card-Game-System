@@ -10,20 +10,27 @@ export async function updateFieldUI(state_obj){
 function summonAnimation(state_obj){
     return new Promise((resolve) => {
         // |-- START
-        const isPlayer = state_obj.turn.player === 'player';
+        const currentPlayer = state_obj.turn.player;
+        const isPlayer = currentPlayer === 'player';
+
+        // puxa o id do card usado neste turno, e então seleciona o componente/card na UI que possui este id.
+        const summonedCardIndex = state_obj[currentPlayer].summonedCardId;
+        const card = document.querySelector(`[data-index="${summonedCardIndex}"]`);
+        
 
         // const flyingCard = card.cloneNode(true); // TODO: este "card" deve ser na verdade uma referência ao card que a função useCard invocou para o estado de campo/field. Basicamente, se useCard botou para campo o card "id6", este id deve ser usado para pegar o elemento que será usado nessa animação, no caso, o card da mão que corresponder a este id de estado.
 
-        // puxa o id do card usado neste turno, e então seleciona o componente/card na UI que possui este id.
-        const summonedCardIndex = state_obj[state_obj.turn.player].summonedCardId;
-        const flyingCard = document.querySelector(`[data-index="${summonedCardIndex}"]`);
+        const flyingCard = card.cloneNode(true);
 
 
         flyingCard.classList.add('flying-card');
         card.insertAdjacentElement('beforeend', flyingCard); // flyingCard deve ser inserido ao DOM para que getBoundingClientRect funcione.
 
-        // TODO: selectedSlot deve puxar o id de um slot vago de campo. Ainda não tratei de como se suscederá isso. Devo verificar a arquitetura disso pra ver a melhor forma de se acessar dados de slot de campo.
-        const selectedSlot = null; 
+        // seleciona um slot vago do campo do jogador atual:
+        const selectedSlot = document.querySelector(`[data-component="field"][data-owner="${currentPlayer}"][data-occupied="false"]`);
+
+        console.log(`Card with the id of "${summonedCardIndex}" will be summoned at ${currentPlayer}'s field on the following slot:`)
+        console.log(selectedSlot);
 
         const flyingCardPos = flyingCard.getBoundingClientRect();
         const selectedSlotPos = selectedSlot.getBoundingClientRect(); 
@@ -41,9 +48,9 @@ function summonAnimation(state_obj){
             flyingCard.style.opacity = 1;
 
             flyingCard.addEventListener('transitionend', () => {
-            flyingCard.remove();
-            console.log('Summon animation ends!');
-            resolve();
+                flyingCard.remove();
+                console.log('Summon animation ends!');
+                resolve();
             }, { once: true });
         });
         // END --|
@@ -55,7 +62,7 @@ function renderCardsToField(state_obj){
     console.group(`Received state to render cards to ${state_obj.turn.player}'s field: `);
     console.log(state_obj[state_obj.turn.player]); 
 
-    //TODO...
+    //TODO... Depois da animação de summon, é necessário remover o card da mão e renderizar ele no slot selecionado.
 }
 
 // TODO: após as funções acima forem implementadas e testadas, considerar implementar também as de prompt, só que com configurações diferentes. No caso, o prompt dos cards no campo, na fase main, deve ser o mesmo prompt dos cards da mão, com a exceção de que que terá somente "details". Já na fase de combate, o prompt deve ser de combate, etc. Um simples if...else ou switch faz essa verificação de estado.

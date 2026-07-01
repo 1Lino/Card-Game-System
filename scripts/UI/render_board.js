@@ -17,8 +17,8 @@ const TOKEN = {
     dataHoverable: true,
     dataPhase: {draw: 'draw', main: 'main', battle: 'battle', end: 'end'},
     dataOccupied: {
-        true: 'true',
-        false: 'false'
+        true: true,
+        false: false
     }
 };
 
@@ -80,15 +80,15 @@ export function GameBoard() {
                     </div>
 
                     <div class="grid field1">
-                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.player}" data-hoverable="${TOKEN.dataHoverable}">Field1</div>
-                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.player}" data-hoverable="${TOKEN.dataHoverable}">Field1</div>
-                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.player}" data-hoverable="${TOKEN.dataHoverable}">Field1</div>
+                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.player}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}">Field1</div>
+                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.player}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}">Field1</div>
+                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.player}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}">Field1</div>
                     </div>
 
                     <div class="grid field2">
-                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.enemy}" data-hoverable="${TOKEN.dataHoverable}">Field2</div>
-                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.enemy}" data-hoverable="${TOKEN.dataHoverable}">Field2</div>
-                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.enemy}" data-hoverable="${TOKEN.dataHoverable}">Field2</div>
+                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.enemy}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}">Field2</div>
+                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.enemy}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}">Field2</div>
+                        <div class="card-slot" data-component="${TOKEN.dataComponent.field}" data-owner="${TOKEN.dataOwner.enemy}" data-hoverable="${TOKEN.dataHoverable}" data-occupied="${TOKEN.dataOccupied.false}">Field2</div>
                     </div>
 
                     <div class="grid phases">

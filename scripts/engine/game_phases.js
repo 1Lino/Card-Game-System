@@ -1,6 +1,8 @@
 // todas as funções relacionadas às fases do jogo, como início de turno, fase principal, fase de ataque, fim de turno, etc., serão definidas aqui. A game_engine que irá usá-las, no entanto.
+import { updateFieldUI } from '/scripts/UI/render_field.js';
 import {updateHandUI} from '/scripts/UI/render_hand.js';
 import {drawCard} from '/scripts/actions/draw_card.js';
+import {useCard} from '/scripts/actions/use_card.js';
 import { getGameState } from "/scripts/engine/game_state.js";
 
 export async function drawPhase(state_obj){
@@ -76,7 +78,7 @@ export async function drawPhase(state_obj){
     }
 
     // caso não seja o primeiro turno, apenas o jogador da vez puxa os cards, e a UI é atualizada de acordo.
-    // TODO: esta sessão deve ser testada e atualizada.
+    // TODO: esta sessão deve ser testada e atualizada se necessário.
     updateHandUI({ ...state});
     state = drawCard({...state});
 
@@ -86,5 +88,9 @@ export async function drawPhase(state_obj){
 export async function mainPhase(state_obj){
     let state = getGameState(state_obj);
 
+    state = useCard({...state}, "id4");
+    await updateFieldUI({...state});
+
     // TODO...
+    return {...state};
 }

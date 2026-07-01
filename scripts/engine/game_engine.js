@@ -5,7 +5,7 @@
 // -Eventos globais também serão controlados aqui. Tudo deverá ser controlado aqui, é como o centro de comando de validações.
 
 import { getGameState } from '/scripts/engine/game_state.js';
-import { drawPhase } from '/scripts/engine/game_phases.js';
+import { drawPhase, mainPhase } from '/scripts/engine/game_phases.js';
 import { useCard } from '/scripts/actions/use_card.js';
 import { handleMouseEvent, toggleMouseEventState } from '/scripts/actions/handle_events.js';
 
@@ -31,6 +31,7 @@ document.body.addEventListener('click', node => {
 state = await drawPhase(state); // isso aqui é só pra teste, pra ver se a função drawPhase tá funcionando, depois isso vai ser controlado por eventos globais, como clique em deck, fim de fase, etc.
 
 // useCard OK.
-state = useCard(state, "id4"); // está funcionando normalmente, falta fazer a UI reagir a isto, seguindo o exemplo de draw_card com render_hand.
+// state = useCard(state, "id4"); // está funcionando normalmente, falta fazer a UI reagir a isto, seguindo o exemplo de draw_card com render_hand.
+state = await mainPhase(state);
 
 console.log('State after card summon:', state);
