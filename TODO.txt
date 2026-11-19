@@ -1,3 +1,5 @@
+VALIDADAS:
+
 (x) 1. A mesa do jogo deve ser um grid distribuido inspirado neste layout:
       - A 1ª row deve ser uma zona para os cards de um jogador, tal zona ocupará 3 espaços do grid.
         ao lado deve haver um espaço para o baralho, e o outro deve ficar livre.
@@ -28,8 +30,10 @@
 (x) 12. transformar todas as cópias profundas do game_state numa função, de modo a evitar repetições de estruturas e evitar possíveis erros de sintaxe. Usar a função getGameState pra isso, pois ela basicamente já cria uma cópia profunda do game_state.
 (x) 13. criar animações de summon e funções de renderização do card no campo. Como use_card já está funcionando, posso usar o estado retornado por ela para fazer os testes de renderização.
 (x) 14. começar a trabalhar no reducer enquanto o projeto está pequeno.
+
+A VALIDAR:
+
 () 15. A propriedade "hoverable" só deve ser aplicada aos campos (slots) caso estejam vazios. Se houver card em cima, somente o card deve possuir tal propriedade.
 () 16. render_hand e render_field são arquivos separados, mas podem ser reduzidos a um só futuramente: render_cards (conterá todas as funções e rotinas relacionadas a renderização de cards e outros elementos relacionados aos cards).
 () 17. É necessário que o usuário não possa interagir com o tabuleiro enquanto as rotinas não forem carregadas. É possível usar assincronia para fazer isso (basicamente, deve-se evitar o famoso "race-condition").
-
-
+() 18. Iniciar implementação da MainPhase. Isto pode ser feito independentemente dos tópicos acima.
