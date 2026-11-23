@@ -87,6 +87,7 @@ export async function drawPhase(state_obj) {
 }
 
 // TODO: implementar a mainPhase
+// basicamente, o usuário deve ser capaz de usar um card.
 export async function mainPhase(state_obj) {
   let state = getGameState(state_obj);
 

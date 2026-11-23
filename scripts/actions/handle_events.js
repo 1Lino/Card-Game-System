@@ -1,69 +1,66 @@
 import { getGameState } from "../engine/game_state.js";
-import { removePreviousDetailPrompts } from "../UI/render_hand.js";
+import { removePreviousOptionsPrompts } from "../UI/render_hand.js";
 
-
-export function handleMouseEvent(node, event, state_obj){
-   
-   if(node.target.dataset.hoverable){
-        switch (event){
-            case 'mouseover':
-                hoverAnimation(node.target, state_obj);
-                break;
-            case 'mouseout':
-                hoverAnimation(node.target, state_obj);
-                break;
-            case 'click':
-                onMouseClick(node.target, state_obj);
-                break;
-            default:
-                break;
-        }
+export function handleMouseEvent(node, event, state_obj) {
+  if (node.target.dataset.hoverable) {
+    switch (event) {
+      case "mouseover":
+        hoverAnimation(node.target, state_obj);
+        break;
+      case "mouseout":
+        hoverAnimation(node.target, state_obj);
+        break;
+      case "click":
+        onMouseClick(node.target, state_obj);
+        break;
+      default:
+        break;
     }
+  }
 }
 
-export function toggleMouseEventState(state_obj, event){
-    const state = getGameState(state_obj);
-    state.event[event] = !state.event[event];
-    return state;
+export function toggleMouseEventState(state_obj, event) {
+  const state = getGameState(state_obj);
+  state.event[event] = !state.event[event];
+  return state;
 }
 
-function hoverAnimation(node, state_obj){
-    // NOTE: este console.log não deve ser deletado enquanto testes ainda forem feitos.
-    // console.log(`Hover on ${node.dataset.owner}'s ${node.dataset.component}: ${state_obj.event.hover}`);
+function hoverAnimation(node, state_obj) {
+  // NOTE: este console.log não deve ser deletado enquanto testes ainda forem feitos.
+  // console.log(`Hover on ${node.dataset.owner}'s ${node.dataset.component}: ${state_obj.event.hover}`);
 
-    if (state_obj.event.hover)
-        node.classList.add('onHover');
-    else 
-        node.classList.remove('onHover');
+  if (state_obj.event.hover) node.classList.add("onHover");
+  else node.classList.remove("onHover");
 }
 
 // TODO: ao clicar num card, suas informações devem ser enviadas para o estado, para que se saiba qual card atual está
 // selecionado. Na fase de batalha, uma lógica a mais deve ser elaborada.
 function onMouseClick(node, state_obj) {
-
-    // teste
-    document.querySelectorAll('[data-hoverable][data-component="card"]').forEach(el => {
-        el.innerHTML = 'Card';
+  // teste
+  document
+    .querySelectorAll('[data-hoverable][data-component="card"]')
+    .forEach((el) => {
+      el.innerHTML = "Card";
     });
 
-    if (node.dataset.owner === 'player' &&
-        node.dataset.component === 'card' && 
-        node.dataset.state === 'in-hand' 
-        ){
+  // se o card clicado for do jogador e for um card da mão, então:
+  if (
+    node.dataset.owner === "player" &&
+    node.dataset.component === "card" &&
+    node.dataset.state === "in-hand"
+  ) {
+    // testes
+    node.innerHTML = `Card: ${node.dataset.index}`; //
 
-        // testes
-        node.innerHTML = `Card: ${node.dataset.index}`; // 
+    console.log("-----------------------");
+    console.log(`Clicked on card with id of ${node.dataset.index}.`);
+    console.log(`Is selected: ${state_obj.event.click}.`);
+    // testes
+  }
 
-        console.log("-----------------------");
-        console.log(`Clicked on card with id of ${node.dataset.index}.`);
-        console.log(`Is selected: ${state_obj.event.click}.`);
-        // testes
-    } 
-
-    // se o jogador clicar em qualquer coisa que não seja seu ou que não esteja em sua mão, remove os prompts de detalhe de card que
-    // porventura estejam ativos.
-    if (node.dataset.owner !== 'player' ||
-        node.dataset.state !== 'in-hand'){
-            removePreviousDetailPrompts();
-        }
+  // se o jogador clicar em qualquer coisa que não seja seu ou que não esteja em sua mão, remove os prompts de detalhe de card que
+  // porventura estejam ativos.
+  if (node.dataset.owner !== "player" || node.dataset.state !== "in-hand") {
+    removePreviousOptionsPrompts();
+  }
 }

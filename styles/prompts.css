@@ -1,0 +1,13 @@
+.card-detail-btn{
+    background-color: cyan;
+    pointer-events: auto;
+}
+
+.card-summon-btn{
+    background-color: yellow;
+    pointer-events: auto;
+}
+.card-summon-btn:hover, .card-detail-btn:hover{
+    background-color: white;
+    cursor: pointer;
+}
