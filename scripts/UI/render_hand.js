@@ -1,3 +1,8 @@
+import {
+  showPromptOn,
+  renderCardDetailsPromptOn,
+} from "/scripts/UI/render_prompt.js";
+
 // funções relacionadas à interface do jogo, como atualizações de UI, animações, etc., serão definidas aqui. As funções de UI serão chamadas pelas fases do jogo, e a game_engine irá controlar as fases, portanto, indiretamente, as funções de UI também.
 
 // já que essa função é assíncrona, ela aguarda pelo retorno de uma promise, que é resolvida quando a animação de puxar o card termina. Assim, a UI só é atualizada quando a animação termina, e não antes, o que evita bugs visuais.
@@ -89,6 +94,7 @@ function showCardOptionsOn(card, hand) {
   hand.appendChild(renderCardOptionsPromptAt(coordsAndDimensions));
 }
 
+// TODO: os prompts do jogo devem ficar em módulo separado, tipo render_prompt.js, que guarda não somente os prompts de cards, mas todos os demais prompts.
 function renderCardOptionsPromptAt(coordsAndDimensions) {
   const { x, y, w, h, gap } = coordsAndDimensions;
   const PROMPT_DRAW_POS = 520;
@@ -107,12 +113,12 @@ function renderCardOptionsPromptAt(coordsAndDimensions) {
   detailPromptBox.style = customStyle;
   detailPromptBox.dataset.component = "promptBox";
 
-  // TODO 1: onde há Details e Summon, deve ser um botão que chama o evento useCard para Summon, e outro evento para Details (ainda não implementado).
-  // TODO 2: ao clicar em Details, um outro prompt deve aparecer no centro da tela, contendo as informações do card. A visibilidade de tal prompt deve ser controlada tanto por um evento toggle no próprio botão de Details como por um botão de fechar no próprio prompt.
-  detailPromptBox.innerHTML = `
-        <button class="card-detail-btn">Details...</button>
-        <button class="card-summon-btn">Summon...</button>
-    `;
+  const detailBtn = document.createElement("button");
+  detailBtn.className = "card-detail-btn";
+  detailBtn.innerText = "Details...";
+  detailBtn.onclick = () => showPromptOn(renderCardDetailsPromptOn);
+
+  detailPromptBox.appendChild(detailBtn);
 
   console.log("prompt rendered upon click!");
 
