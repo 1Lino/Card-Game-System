@@ -6,6 +6,7 @@
 
 import { getGameState } from "/scripts/engine/game_state.js";
 import { drawPhase, mainPhase } from "/scripts/engine/game_phases.js";
+import { CardService } from "/scripts/services/card_service.js";
 import { useCard } from "/scripts/actions/use_card.js";
 import {
   handleMouseEvent,
@@ -28,6 +29,26 @@ document.body.addEventListener("click", (node) => {
   state = toggleMouseEventState(state, "click");
   handleMouseEvent(node, "click", state);
 });
+
+// ###################### CARREGAMENTO DE BASE ###########################
+const response = await fetch("./data/cards.json");
+
+if (!response.ok) {
+  throw new Error("Não foi possível carregar os cards.");
+}
+
+const data = await response.json();
+
+const cardService = new CardService(data.cards); // Os cards são carregados via interface CardService. Ficam então disponíveis para uso.
+
+// pra testar se o carregamento funcionou:
+startGame(cardService);
+
+function startGame(cardService) {
+  const card = cardService.getByName("Dragão de Fogo"); // OK, está funcionando
+
+  console.log(cardService.getDisplayData(card));
+}
 
 // ################################################## TESTES ################################################################
 // As chamadas abaixo devem ser feitas na game_phases, em suas respectivas fases. As funções de fase serão testadas aqui por conveniência, uma após outra. Isto aqui poderia inclusive ser uma arquivo separado de testes.
